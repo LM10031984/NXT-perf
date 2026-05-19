@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. `SITUATION_PERSONA_MAP` dans `src/lib/constants.ts` associe chaque scenario à une voix ElevenLabs (Kind/Sport/Warrior)
   5. Le pipeline d'ingestion Drive est vérifiable : le dossier `COACH_BRAIN_DRIVE_FOLDER_ID` est indexé dans les tables pgvector
 **Plans**: 6 plans
-  - [ ] 01-00-PLAN.md — Wave 0 stubs (test files + rag-health route stub) for Nyquist sampling continuity
+  - [x] 01-00-PLAN.md — Wave 0 stubs (test files + rag-health route stub) for Nyquist sampling continuity
   - [ ] 01-01-PLAN.md — Copilot types + buildCopilotContext() with 3000-token cap (COPILOT-07)
   - [ ] 01-02-PLAN.md — data-access layer + 3 mock-bypass component migrations (DATA-01, DATA-02 partial)
   - [ ] 01-03-PLAN.md — Separate copilot-store Zustand store + isolation grep test (COPILOT-08)

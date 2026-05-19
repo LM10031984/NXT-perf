@@ -1,3 +1,17 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: Ready to execute
+stopped_at: Completed 01-context-layer-data-hygiene/01-00-PLAN.md — Wave 0 stubs
+last_updated: "2026-05-19T17:33:14.922Z"
+progress:
+  total_phases: 7
+  completed_phases: 0
+  total_plans: 6
+  completed_plans: 1
+---
+
 # Project State
 
 ## Project Reference
@@ -5,20 +19,17 @@
 See: .planning/PROJECT.md (updated 2026-05-18)
 
 **Core value:** En 5 secondes, l'utilisateur comprend où il en est ET sait quoi faire ensuite
-**Current focus:** Phase 1 — Context Layer + Data Hygiene
+**Current focus:** Phase 01 — Context Layer + Data Hygiene
 
 ## Current Position
 
-Phase: 1 of 7 (Context Layer + Data Hygiene)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-05-19 — ROADMAP.md + STATE.md initialisés
-
-Progress: [░░░░░░░░░░] 0%
+Phase: 01 (Context Layer + Data Hygiene) — EXECUTING
+Plan: 2 of 6
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 0
 - Average duration: -
 - Total execution time: 0 hours
@@ -30,10 +41,12 @@ Progress: [░░░░░░░░░░] 0%
 | - | - | - | - |
 
 **Recent Trend:**
+
 - Last 5 plans: -
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-context-layer-data-hygiene P00 | 5 | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -49,6 +62,9 @@ Recent decisions affecting current work:
 - Stack: Raw ReadableStream server-side (pas de Vercel AI SDK), custom hook OU useChat client-side validé en Phase 4
 - Stack: OpenRouter → Anthropic Claude Sonnet uniquement pour ce milestone (autres providers désactivés dans la route copilote)
 - Validation: Laurent (usage perso) — pas de testeurs externes cette milestone
+- [Phase 01-context-layer-data-hygiene]: Wave 0: describe.skip (not it.skip) used for test stubs — entire suite group reports as skipped for cleaner CI output
+- [Phase 01-context-layer-data-hygiene]: Wave 0: period = YYYY-MM convention captured as test case name in data-access.test.ts stub — locks downstream contract for plan 01-02
+- [Phase 01-context-layer-data-hygiene]: Wave 0: rag-health route stub uses typed Promise<NextResponse> return — enables tsc build-gate coverage without importing production modules
 
 ### Pending Todos
 
@@ -62,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-19
-Stopped at: Roadmap créé, STATE initialisé — prêt pour `/gsd:plan-phase 1`
+Last session: 2026-05-19T17:33:14.920Z
+Stopped at: Completed 01-context-layer-data-hygiene/01-00-PLAN.md — Wave 0 stubs
 Resume file: None
