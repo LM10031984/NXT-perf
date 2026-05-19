@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   - [ ] 01-01-PLAN.md — Copilot types + buildCopilotContext() with 3000-token cap (COPILOT-07)
   - [ ] 01-02-PLAN.md — data-access layer + 3 mock-bypass component migrations (DATA-01, DATA-02 partial)
   - [ ] 01-03-PLAN.md — Separate copilot-store Zustand store + isolation grep test (COPILOT-08)
-  - [ ] 01-04-PLAN.md — SITUATION_PERSONA_MAP + persona enums in constants.ts (TRAIN-04)
+  - [x] 01-04-PLAN.md — SITUATION_PERSONA_MAP + persona enums in constants.ts (TRAIN-04)
   - [ ] 01-05-PLAN.md — Live RAG health endpoint + ventes-tab chart-fixtures migration (RAG-01, RAG-05, DATA-02 final)
 
 ### Phase 2: Streaming API + RAG Grounding
