@@ -26,8 +26,8 @@
 - [ ] **COPILOT-04**: LLM responses stream via SSE (`text/event-stream`) — no blocking responses > 1 second visible to user
 - [ ] **COPILOT-05**: Responses include action buttons (typed via Zod schema) that redirect to training/profiling/saisie
 - [ ] **COPILOT-06**: When `isDemoMode === true` in the store, the copilot returns a stubbed response without calling Anthropic
-- [ ] **COPILOT-07**: `buildCopilotContext(userId)` hard-caps payload at 3000 tokens; never serializes `users[]`, `networks`, or other users' data
-- [ ] **COPILOT-08**: Copilot state lives in a dedicated `src/stores/copilot-store.ts`, never imported in `app-store.ts`
+- [x] **COPILOT-07**: `buildCopilotContext(userId)` hard-caps payload at 3000 tokens; never serializes `users[]`, `networks`, or other users' data
+- [x] **COPILOT-08**: Copilot state lives in a dedicated `src/stores/copilot-store.ts`, never imported in `app-store.ts`
 - [ ] **COPILOT-09**: Streaming endpoint at `src/app/api/copilot/stream/route.ts` (new) — does NOT modify existing `/api/coach-brain/chat`
 - [ ] **COPILOT-10**: System prompt instructs the model to refuse contractual content (price estimations, mandate clauses) — loi Hoguet guardrail
 - [ ] **COPILOT-11**: Per-request timeout 30s; client aborts on disconnect
@@ -38,7 +38,7 @@
 - [ ] **RAG-02**: Every grounded response displays "Source: [filename]" with Drive link when metadata available
 - [ ] **RAG-03**: Retrieval threshold = 0.75 cosine similarity; returns 0 chunks rather than weak chunks
 - [ ] **RAG-04**: System prompt explicitly says "Je n'ai pas d'exemple pertinent" when grounding is thin (no extrapolation)
-- [ ] **RAG-05**: Drive ingestion pipeline operational and verifiable (Drive folder → pgvector tables populated)
+- [x] **RAG-05**: Drive ingestion pipeline operational and verifiable (Drive folder → pgvector tables populated)
 - [ ] **RAG-06**: RAG chunks wrapped in `<rag-source>...</rag-source>` delimiters in system prompt (prompt injection defense)
 
 ### Training Vocal (TRAIN)
@@ -47,7 +47,7 @@
 - [ ] **TRAIN-07**: Supabase schemas from Train-my-agent (scenarios, debrief fields, gamification, vocal metrics) are either reconciled with NXT-perf's Supabase or kept as separate tables with documented isolation
 - [ ] **TRAIN-02**: New route `src/app/(dashboard)/conseiller/training/[situation]/page.tsx` accessible from copilot deep-links
 - [ ] **TRAIN-03**: At least 1 operational scenario shipped (target: "mandats" — most cited weak ratio)
-- [ ] **TRAIN-04**: `SITUATION_PERSONA_MAP` in `src/lib/constants.ts` maps each scenario to one of Kind/Sport/Warrior voices
+- [x] **TRAIN-04**: `SITUATION_PERSONA_MAP` in `src/lib/constants.ts` maps each scenario to one of Kind/Sport/Warrior voices
 - [ ] **TRAIN-05**: Scenario player uses existing `/api/voice/tts` (ElevenLabs) and `/api/vocal` (Groq Whisper) endpoints — no new endpoints
 - [ ] **TRAIN-06**: Sidebar conseiller section gains a "Training vocal" nav item
 
@@ -67,7 +67,7 @@
 
 ### Data Layer Hygiene (DATA)
 
-- [ ] **DATA-01**: New `src/lib/data-access.ts` exposes `getWeeklyResults(userId, period)` reading from store
+- [x] **DATA-01**: New `src/lib/data-access.ts` exposes `getWeeklyResults(userId, period)` reading from store
 - [ ] **DATA-02**: The 4 components identified in CONCERNS.md that import mock data directly are migrated to the data-access layer
 
 ---
@@ -101,13 +101,13 @@
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Pending |
-| COPILOT-07 | Phase 1 | Pending |
-| COPILOT-08 | Phase 1 | Pending |
+| COPILOT-07 | Phase 1 | Complete |
+| COPILOT-08 | Phase 1 | Complete |
 | RAG-01 | Phase 1 | Pending |
-| RAG-05 | Phase 1 | Pending |
-| TRAIN-04 | Phase 1 | Pending |
+| RAG-05 | Phase 1 | Complete |
+| TRAIN-04 | Phase 1 | Complete |
 | COPILOT-04 | Phase 2 | Pending |
 | COPILOT-06 | Phase 2 | Pending |
 | COPILOT-09 | Phase 2 | Pending |
