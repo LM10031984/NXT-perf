@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 01-context-layer-data-hygiene/01-01-PLAN.md — copilot type surface + buildCopilotContext
-last_updated: "2026-05-19T17:38:07.914Z"
+stopped_at: Completed 01-context-layer-data-hygiene/01-02-PLAN.md — data-access.ts + 3 components migrated
+last_updated: "2026-05-19T17:41:08.670Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 6
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-05-18)
 ## Current Position
 
 Phase: 01 (Context Layer + Data Hygiene) — EXECUTING
-Plan: 4 of 6
+Plan: 5 of 6
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Plan: 4 of 6
 | Phase 01-context-layer-data-hygiene P00 | 5 | 3 tasks | 5 files |
 | Phase 01-context-layer-data-hygiene P04 | 5 | 1 tasks | 2 files |
 | Phase 01-context-layer-data-hygiene P01 | 8min | 2 tasks | 3 files |
+| Phase 01-context-layer-data-hygiene P02 | 272 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [Phase 01-context-layer-data-hygiene]: CONTEXT.md D5 verbatim — SituationType 5 values, mandats only opérationnel Phase 6, 4 autres placeholders pour type-locking
 - [Phase 01-context-layer-data-hygiene]: buildCopilotContext accepte topCriticite en param pré-calculé (CriticitePoint | null) — caller exécute findCriticitePoints() séparément, maintient la pure function sans couplage pipeline diagnostic
 - [Phase 01-context-layer-data-hygiene]: TOKEN_BUDGET: total=3000, userContext=1500, ragChunks=1200, concepts=300 — troncature computedRatios en premier (pop loop), identité utilisateur toujours préservée
+- [Phase 01-context-layer-data-hygiene]: DATA-01/DATA-02: Period convention locked — YYYY-MM matched via periodStart.startsWith + periodType === month; getWeeklyResults() is the single access point replacing direct mock-results imports
+- [Phase 01-context-layer-data-hygiene]: DATA-02: yearly view and week-aggregate modes return null + TODO(yearly-data-access) — out of Phase 1 scope; ventes-tab.tsx deferred to plan 01-05
 
 ### Pending Todos
 
@@ -83,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-19T17:38:07.911Z
-Stopped at: Completed 01-context-layer-data-hygiene/01-01-PLAN.md — copilot type surface + buildCopilotContext
+Last session: 2026-05-19T17:41:08.667Z
+Stopped at: Completed 01-context-layer-data-hygiene/01-02-PLAN.md — data-access.ts + 3 components migrated
 Resume file: None

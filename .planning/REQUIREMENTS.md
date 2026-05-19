@@ -68,7 +68,7 @@
 ### Data Layer Hygiene (DATA)
 
 - [x] **DATA-01**: New `src/lib/data-access.ts` exposes `getWeeklyResults(userId, period)` reading from store
-- [ ] **DATA-02**: The 4 components identified in CONCERNS.md that import mock data directly are migrated to the data-access layer
+- [x] **DATA-02**: The 4 components identified in CONCERNS.md that import mock data directly are migrated to the data-access layer
 
 ---
 
@@ -102,7 +102,7 @@
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
 | DATA-01 | Phase 1 | Complete |
-| DATA-02 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Complete |
 | COPILOT-07 | Phase 1 | Complete |
 | COPILOT-08 | Phase 1 | Complete |
 | RAG-01 | Phase 1 | Pending |
