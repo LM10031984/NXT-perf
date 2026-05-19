@@ -20,7 +20,7 @@ import { useTeamResults } from "@/hooks/team/use-team-results";
 import { useResults, useAllResults } from "@/hooks/use-results";
 import { useAppStore } from "@/stores/app-store";
 import { aggregateResults } from "@/lib/aggregate-results";
-import { mockWeeklyResults, mockYearlyResults } from "@/data/mock-results";
+import { getWeeklyResults } from "@/lib/data-access";
 import { cn } from "@/lib/utils";
 import type { PeriodResults } from "@/types/results";
 
@@ -77,13 +77,15 @@ export default function ManagerResultatsPage() {
 
   // Compute results based on scope + period
   const results: PeriodResults | null = useMemo(() => {
+    const currentPeriod = new Date().toISOString().slice(0, 7);
     // ── Mode INDIVIDUAL
     if (isIndividualScope && conseillerId) {
       if (periodView === "week" && periodOffset === 0) {
-        return isDemo ? mockWeeklyResults : null;
+        return getWeeklyResults(conseillerId, currentPeriod);
       }
       if (periodView === "year" && periodOffset === 0) {
-        return isDemo ? mockYearlyResults : null;
+        // TODO(yearly-data-access): out of Phase 1 scope — see post-milestone Supabase phase
+        return null;
       }
       if (periodView === "month" && periodOffset === 0) {
         return individualMonthResults;
@@ -95,13 +97,12 @@ export default function ManagerResultatsPage() {
     if (conseillers.length === 0) return null;
 
     if (periodView === "week" && periodOffset === 0) {
-      if (!isDemo) return null;
-      // Demo aggregate × N conseillers (simulates team weekly aggregate)
-      return aggregateResults(conseillers.map(() => mockWeeklyResults));
+      // TODO(yearly-data-access): out of Phase 1 scope — see post-milestone Supabase phase
+      return null;
     }
     if (periodView === "year" && periodOffset === 0) {
-      if (!isDemo) return null;
-      return aggregateResults(conseillers.map(() => mockYearlyResults));
+      // TODO(yearly-data-access): out of Phase 1 scope — see post-milestone Supabase phase
+      return null;
     }
     if (periodView === "month" && periodOffset === 0) {
       // Aggregate each conseiller's most recent result
@@ -121,7 +122,6 @@ export default function ManagerResultatsPage() {
     allResults,
     periodView,
     periodOffset,
-    isDemo,
     individualMonthResults,
   ]);
 

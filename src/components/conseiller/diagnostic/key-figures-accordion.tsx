@@ -7,10 +7,9 @@ import { useUser } from "@/hooks/use-user";
 import { useResults, useAllResults } from "@/hooks/use-results";
 import { useYTDResults } from "@/hooks/use-ytd-results";
 import { useRatios } from "@/hooks/use-ratios";
-import { useAppStore } from "@/stores/app-store";
 import { usePersistedState } from "@/hooks/use-persisted-state";
 import { aggregateResults } from "@/lib/aggregate-results";
-import { mockWeeklyResults } from "@/data/mock-results";
+import { getWeeklyResults } from "@/lib/data-access";
 import {
   computeEffectivePeriodMonths,
   isCurrentMonthInProgress,
@@ -57,8 +56,6 @@ export function KeyFiguresAccordion({ displayName }: Props = {}) {
   const monthResults = useResults();
   const ytdResults = useYTDResults();
   const allResults = useAllResults();
-  const isDemo = useAppStore((s) => s.isDemo);
-
   const [view, setView] = usePersistedState<DiagnosticView>(
     "nxt-diag-view",
     "both"
@@ -70,7 +67,8 @@ export function KeyFiguresAccordion({ displayName }: Props = {}) {
 
   const periodResults = useMemo<PeriodResults | null>(() => {
     if (!user) return null;
-    if (period === "semaine") return isDemo ? mockWeeklyResults : null;
+    const currentPeriod = new Date().toISOString().slice(0, 7);
+    if (period === "semaine") return getWeeklyResults(user.id, currentPeriod);
     if (period === "mois") return monthResults;
     if (period === "trimestre" || period === "annee") return ytdResults;
     if (period === "depuis_debut") {
@@ -79,7 +77,7 @@ export function KeyFiguresAccordion({ displayName }: Props = {}) {
     }
     // personnalisé — V1 : fallback YTD (date-picker custom à venir)
     return ytdResults;
-  }, [period, user, isDemo, monthResults, ytdResults, allResults]);
+  }, [period, user, monthResults, ytdResults, allResults]);
 
   const periodMonths = useMemo(() => {
     if (period === "semaine") return 0.25;

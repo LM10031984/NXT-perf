@@ -19,7 +19,7 @@ import { useDirectorData } from "@/hooks/use-director-data";
 import { useResults } from "@/hooks/use-results";
 import { useAppStore } from "@/stores/app-store";
 import { aggregateResults } from "@/lib/aggregate-results";
-import { mockWeeklyResults, mockYearlyResults } from "@/data/mock-results";
+import { getWeeklyResults } from "@/lib/data-access";
 import { cn } from "@/lib/utils";
 import type { PeriodResults } from "@/types/results";
 import type { User } from "@/types/user";
@@ -135,13 +135,15 @@ export default function DirecteurResultatsPage() {
 
   // Calcul des résultats selon scope + période (logique miroir du Manager)
   const results: PeriodResults | null = useMemo(() => {
+    const currentPeriod = new Date().toISOString().slice(0, 7);
     // ── Mode CONSEILLER (individuel)
     if (scope === "conseiller" && scopeId) {
       if (periodView === "week" && periodOffset === 0) {
-        return isDemo ? mockWeeklyResults : null;
+        return getWeeklyResults(scopeId, currentPeriod);
       }
       if (periodView === "year" && periodOffset === 0) {
-        return isDemo ? mockYearlyResults : null;
+        // TODO(yearly-data-access): out of Phase 1 scope — see post-milestone Supabase phase
+        return null;
       }
       if (periodView === "month" && periodOffset === 0) {
         return individualMonthResults;
@@ -153,12 +155,12 @@ export default function DirecteurResultatsPage() {
     if (pool.length === 0) return null;
 
     if (periodView === "week" && periodOffset === 0) {
-      if (!isDemo) return null;
-      return aggregateResults(pool.map(() => mockWeeklyResults));
+      // TODO(yearly-data-access): out of Phase 1 scope — see post-milestone Supabase phase
+      return null;
     }
     if (periodView === "year" && periodOffset === 0) {
-      if (!isDemo) return null;
-      return aggregateResults(pool.map(() => mockYearlyResults));
+      // TODO(yearly-data-access): out of Phase 1 scope — see post-milestone Supabase phase
+      return null;
     }
     if (periodView === "month" && periodOffset === 0) {
       const list = pool.flatMap((c) => {
@@ -177,7 +179,6 @@ export default function DirecteurResultatsPage() {
     allResults,
     periodView,
     periodOffset,
-    isDemo,
     individualMonthResults,
   ]);
 
