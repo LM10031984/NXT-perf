@@ -102,3 +102,33 @@ export const GPS_THEME_LABELS: Record<GPSTheme, string> = {
   ca_compromis: "CA Compromis",
   ca_acte: "CA Acte",
 };
+
+/**
+ * Training vocal — TRAIN-04 (CONTEXT.md D5 verrouillé Phase 1).
+ *
+ * Les 5 situations forment l'enum de type-locking pour Phase 6.
+ * Seul `mandats` ship un scénario opérationnel en Phase 6 ; les 4 autres
+ * sont des placeholders pour que le type system attrape toutes les branches.
+ */
+export type SituationType =
+  | "mandats"
+  | "estimation"
+  | "objections-acheteur"
+  | "negociation-honoraires"
+  | "follow-up";
+
+export type ElevenLabsPersona = "kind" | "sport" | "warrior";
+
+export const SITUATION_PERSONA_MAP: Record<SituationType, ElevenLabsPersona> = {
+  "mandats": "warrior",                  // pitch fort, ton déterminé
+  "estimation": "kind",                   // ton consultatif, customer-facing
+  "objections-acheteur": "sport",         // ton énergique, rythme rapide
+  "negociation-honoraires": "warrior",    // ton confiant, décisif
+  "follow-up": "kind",                    // ton chaleureux, fidélisation
+};
+
+export const PERSONA_VOICE_ENV_VAR: Record<ElevenLabsPersona, string> = {
+  kind: "ELEVENLABS_KIND_COACH_VOICE_ID",
+  sport: "ELEVENLABS_SPORT_COACH_VOICE_ID",
+  warrior: "ELEVENLABS_WARRIOR_VOICE_ID",
+};
