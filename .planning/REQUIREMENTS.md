@@ -98,11 +98,47 @@
 
 ## Traceability
 
-To be filled by ROADMAP.md — maps each REQ-ID to its phase.
-
 | REQ-ID | Phase | Status |
-|---|---|---|
-| (filled by roadmapper) | | |
+|--------|-------|--------|
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| COPILOT-07 | Phase 1 | Pending |
+| COPILOT-08 | Phase 1 | Pending |
+| RAG-01 | Phase 1 | Pending |
+| RAG-05 | Phase 1 | Pending |
+| TRAIN-04 | Phase 1 | Pending |
+| COPILOT-04 | Phase 2 | Pending |
+| COPILOT-06 | Phase 2 | Pending |
+| COPILOT-09 | Phase 2 | Pending |
+| COPILOT-10 | Phase 2 | Pending |
+| COPILOT-11 | Phase 2 | Pending |
+| RAG-02 | Phase 2 | Pending |
+| RAG-03 | Phase 2 | Pending |
+| RAG-04 | Phase 2 | Pending |
+| RAG-06 | Phase 2 | Pending |
+| VOICE-01 | Phase 3 | Pending |
+| VOICE-02 | Phase 3 | Pending |
+| VOICE-03 | Phase 3 | Pending |
+| VOICE-04 | Phase 3 | Pending |
+| COPILOT-01 | Phase 4 | Pending |
+| COPILOT-02 | Phase 4 | Pending |
+| COPILOT-03 | Phase 4 | Pending |
+| COPILOT-05 | Phase 4 | Pending |
+| DASH-01 | Phase 5 | Pending |
+| DASH-02 | Phase 5 | Pending |
+| DASH-03 | Phase 5 | Pending |
+| DASH-04 | Phase 5 | Pending |
+| DASH-05 | Phase 5 | Pending |
+| DASH-06 | Phase 5 | Pending |
+| TRAIN-01 | Phase 6 | Pending |
+| TRAIN-02 | Phase 6 | Pending |
+| TRAIN-03 | Phase 6 | Pending |
+| TRAIN-05 | Phase 6 | Pending |
+| TRAIN-06 | Phase 6 | Pending |
+| ONBO-01 | Phase 7 | Pending |
+| ONBO-02 | Phase 7 | Pending |
+| ONBO-03 | Phase 7 | Pending |
+| ONBO-04 | Phase 7 | Pending |
 
 ---
 
