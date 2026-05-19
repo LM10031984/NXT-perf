@@ -43,7 +43,8 @@
 
 ### Training Vocal (TRAIN)
 
-- [ ] **TRAIN-01**: Training vocal code is imported from Laurent's local external files into NXT-perf (proper TypeScript types, no `// @ts-ignore` hacks)
+- [ ] **TRAIN-01**: Training vocal code is ported from https://github.com/LM10031984/Train-my-agent (Vite/React/TypeScript app with own Supabase schema) into NXT-perf — port to Next.js App Router conventions, proper TypeScript types, no `// @ts-ignore` hacks. NOTE: this is a port, not a copy-paste — see Phase 6 details for scope.
+- [ ] **TRAIN-07**: Supabase schemas from Train-my-agent (scenarios, debrief fields, gamification, vocal metrics) are either reconciled with NXT-perf's Supabase or kept as separate tables with documented isolation
 - [ ] **TRAIN-02**: New route `src/app/(dashboard)/conseiller/training/[situation]/page.tsx` accessible from copilot deep-links
 - [ ] **TRAIN-03**: At least 1 operational scenario shipped (target: "mandats" — most cited weak ratio)
 - [ ] **TRAIN-04**: `SITUATION_PERSONA_MAP` in `src/lib/constants.ts` maps each scenario to one of Kind/Sport/Warrior voices
@@ -135,6 +136,7 @@
 | TRAIN-03 | Phase 6 | Pending |
 | TRAIN-05 | Phase 6 | Pending |
 | TRAIN-06 | Phase 6 | Pending |
+| TRAIN-07 | Phase 6 | Pending |
 | ONBO-01 | Phase 7 | Pending |
 | ONBO-02 | Phase 7 | Pending |
 | ONBO-03 | Phase 7 | Pending |

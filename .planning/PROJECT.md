@@ -85,9 +85,9 @@ NXT Performance est un cockpit web de performance commerciale pour l'immobilier 
 - `ELEVENLABS_*_COACH_VOICE_ID` — 3 personnalités vocales (Kind / Sport / Warrior)
 - `GROQ_API_KEY` — transcription Whisper (saisie vocale)
 
-**Outils existants externes** (à rapatrier dans NXT-perf) :
-- Training vocal IA (situations commerciales) — fichiers locaux sur la machine de Laurent
-- Profiling client — fichiers locaux séparés
+**Outils existants externes** (à rapatrier/porter dans NXT-perf) :
+- Training vocal IA (situations commerciales) — repo privé https://github.com/LM10031984/Train-my-agent (Vite/React/TypeScript, ~1.5MB TS, propre schéma Supabase multi-tenant + debrief fields + gamification + vocal metrics). **C'est un portage Vite → Next.js, pas un copy-paste.**
+- Profiling client — fichiers locaux séparés (URL à fournir avant Phase 6)
 
 **Concerns UX prioritaires** (depuis `.planning/codebase/CONCERNS.md`) :
 - Pages denses : `manager/equipe/page.tsx` (941 l.), `directeur/pilotage-financier/page.tsx` (766 l.), `production-chain.tsx` (1542 l.) — HORS scope cette milestone

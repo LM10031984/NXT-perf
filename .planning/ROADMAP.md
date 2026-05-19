@@ -85,15 +85,18 @@ Decimal phases appear between their surrounding integers in numeric order.
 **UI hint**: yes
 
 ### Phase 6: Training Vocal Module
-**Goal**: Le training vocal est rapatrié dans NXT-perf avec au moins 1 scénario opérationnel accessible depuis le copilote et la sidebar
-**Depends on**: Phase 3, Phase 5
-**Requirements**: TRAIN-01, TRAIN-02, TRAIN-03, TRAIN-05, TRAIN-06
+**Goal**: Le training vocal est porté depuis le repo externe `LM10031984/Train-my-agent` (Vite/React + Supabase) vers NXT-perf (Next.js App Router) avec au moins 1 scénario opérationnel accessible depuis le copilote et la sidebar
+**Source repo**: https://github.com/LM10031984/Train-my-agent (private) — Vite/React/TypeScript app, ~1.5MB TS, own Supabase migrations (multitenant, debrief fields, gamification, vocal metrics)
+**Scope warning**: This is a **port from Vite → Next.js**, NOT a file copy. Components, hooks, services, scenarios must be adapted to Next.js App Router. Supabase schemas need reconciliation. This phase is likely the LARGEST in the milestone — expect a dedicated research pass during `/gsd:plan-phase 6`.
+**Depends on**: Phase 3 (VocalFlow infrastructure stable), Phase 5 (dashboard deep-links ready)
+**Requirements**: TRAIN-01, TRAIN-02, TRAIN-03, TRAIN-05, TRAIN-06, TRAIN-07
 **Success Criteria** (what must be TRUE):
-  1. Le code training vocal externe est importé avec types TypeScript propres — aucun `// @ts-ignore` non documenté
+  1. Le code training vocal de `Train-my-agent` est porté vers NXT-perf avec types TypeScript propres — aucun `// @ts-ignore` non documenté
   2. La route `conseiller/training/[situation]` répond et charge le scénario "mandats" (au minimum)
   3. Un scénario de training complet s'exécute de bout en bout : intro ElevenLabs TTS → réponse agent → transcription Groq Whisper → feedback — sans erreur
   4. La sidebar conseiller affiche un item de navigation "Training vocal" qui pointe vers la route training
   5. Un bouton "Lancer le training mandats" dans le copilote ou le dashboard ouvre correctement `training/mandats`
+  6. Les schémas Supabase du repo source sont soit fusionnés dans NXT-perf (avec migration documentée), soit isolés en tables séparées (avec documentation du contrat d'interface)
 **Plans**: TBD
 **UI hint**: yes
 
