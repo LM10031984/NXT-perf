@@ -32,7 +32,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `src/stores/copilot-store.ts` existe en store Zustand séparé, jamais importé dans `app-store.ts`
   4. `SITUATION_PERSONA_MAP` dans `src/lib/constants.ts` associe chaque scenario à une voix ElevenLabs (Kind/Sport/Warrior)
   5. Le pipeline d'ingestion Drive est vérifiable : le dossier `COACH_BRAIN_DRIVE_FOLDER_ID` est indexé dans les tables pgvector
-**Plans**: TBD
+**Plans**: 6 plans
+  - [ ] 01-00-PLAN.md — Wave 0 stubs (test files + rag-health route stub) for Nyquist sampling continuity
+  - [ ] 01-01-PLAN.md — Copilot types + buildCopilotContext() with 3000-token cap (COPILOT-07)
+  - [ ] 01-02-PLAN.md — data-access layer + 3 mock-bypass component migrations (DATA-01, DATA-02 partial)
+  - [ ] 01-03-PLAN.md — Separate copilot-store Zustand store + isolation grep test (COPILOT-08)
+  - [ ] 01-04-PLAN.md — SITUATION_PERSONA_MAP + persona enums in constants.ts (TRAIN-04)
+  - [ ] 01-05-PLAN.md — Live RAG health endpoint + ventes-tab chart-fixtures migration (RAG-01, RAG-05, DATA-02 final)
 
 ### Phase 2: Streaming API + RAG Grounding
 **Goal**: Le serveur peut répondre au copilote en streaming SSE avec des chunks RAG ancrés, des guardrails loi Hoguet, et un mode demo qui ne touche jamais Anthropic
@@ -119,7 +125,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Context Layer + Data Hygiene | 0/TBD | Not started | - |
+| 1. Context Layer + Data Hygiene | 0/6 | Not started | - |
 | 2. Streaming API + RAG Grounding | 0/TBD | Not started | - |
 | 3. VocalFlow Stabilization | 0/TBD | Not started | - |
 | 4. Copilot UI | 0/TBD | Not started | - |
