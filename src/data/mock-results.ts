@@ -742,16 +742,6 @@ export const mockYearlyResults: PeriodResults = {
   updatedAt: "2026-02-24T10:00:00Z",
 };
 
-// Monthly CA evolution data for charts
-export const mockMonthlyCA = [
-  { month: "Sep", ca: 6200 },
-  { month: "Oct", ca: 8500 },
-  { month: "Nov", ca: 15200 },
-  { month: "Déc", ca: 12000 },
-  { month: "Jan", ca: 9800 },
-  { month: "Fév", ca: 8500 },
-];
-
 // Weekly activity data for charts
 export const mockWeeklyActivity = [
   { day: "Lun", contacts: 8, rdv: 1, visites: 2 },
