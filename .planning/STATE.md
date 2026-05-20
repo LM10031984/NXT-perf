@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 01-context-layer-data-hygiene/01-02-PLAN.md — data-access.ts + 3 components migrated
-last_updated: "2026-05-19T17:41:08.670Z"
+stopped_at: Completed 01-context-layer-data-hygiene/01-03-PLAN.md — copilot-store.ts + 7 active tests
+last_updated: "2026-05-20T09:29:04.900Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-05-18)
 ## Current Position
 
 Phase: 01 (Context Layer + Data Hygiene) — EXECUTING
-Plan: 5 of 6
+Plan: 6 of 6
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: 5 of 6
 | Phase 01-context-layer-data-hygiene P04 | 5 | 1 tasks | 2 files |
 | Phase 01-context-layer-data-hygiene P01 | 8min | 2 tasks | 3 files |
 | Phase 01-context-layer-data-hygiene P02 | 272 | 2 tasks | 5 files |
+| Phase 01-context-layer-data-hygiene P03 | 15min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase 01-context-layer-data-hygiene]: TOKEN_BUDGET: total=3000, userContext=1500, ragChunks=1200, concepts=300 — troncature computedRatios en premier (pop loop), identité utilisateur toujours préservée
 - [Phase 01-context-layer-data-hygiene]: DATA-01/DATA-02: Period convention locked — YYYY-MM matched via periodStart.startsWith + periodType === month; getWeeklyResults() is the single access point replacing direct mock-results imports
 - [Phase 01-context-layer-data-hygiene]: DATA-02: yearly view and week-aggregate modes return null + TODO(yearly-data-access) — out of Phase 1 scope; ventes-tab.tsx deferred to plan 01-05
+- [Phase 01-context-layer-data-hygiene]: useCopilotStore is a completely separate Zustand store — never merged into useAppStore. Enforced by CI structural test (fs.readFileSync + regex on app-store.ts).
+- [Phase 01-context-layer-data-hygiene]: reset() preserves suggestion cache intentionally — Phase 4 FloatingCopilote expects stable chips across chat session cycles.
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-19T17:41:08.667Z
-Stopped at: Completed 01-context-layer-data-hygiene/01-02-PLAN.md — data-access.ts + 3 components migrated
+Last session: 2026-05-20T09:29:04.897Z
+Stopped at: Completed 01-context-layer-data-hygiene/01-03-PLAN.md — copilot-store.ts + 7 active tests
 Resume file: None
