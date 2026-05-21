@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 interface UseVocalRecorderReturn {
   isRecording: boolean;
@@ -11,12 +11,14 @@ export function useVocalRecorder(): UseVocalRecorderReturn {
   const [isRecording, setIsRecording] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
 
   const startRecording = useCallback(async () => {
     try {
       setError(null);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
 
       const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
         ? "audio/webm;codecs=opus"
@@ -44,6 +46,12 @@ export function useVocalRecorder(): UseVocalRecorderReturn {
     return new Promise((resolve) => {
       const mediaRecorder = mediaRecorderRef.current;
       if (!mediaRecorder || mediaRecorder.state === "inactive") {
+        // BUG-002 fix: Even if recorder is inactive, ensure tracks are stopped
+        const stream = streamRef.current;
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+          streamRef.current = null;
+        }
         setIsRecording(false);
         resolve(null);
         return;
@@ -54,12 +62,27 @@ export function useVocalRecorder(): UseVocalRecorderReturn {
           type: mediaRecorder.mimeType,
         });
         mediaRecorder.stream.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
         setIsRecording(false);
         resolve(blob);
       };
 
       mediaRecorder.stop();
     });
+  }, []);
+
+  // BUG-002 fix: Cleanup on unmount to stop any lingering tracks
+  useEffect(() => {
+    return () => {
+      const stream = streamRef.current;
+      if (stream) {
+        stream.getTracks().forEach((t) => t.stop());
+      }
+      const recorder = mediaRecorderRef.current;
+      if (recorder && recorder.state !== "inactive") {
+        recorder.stop();
+      }
+    };
   }, []);
 
   return { isRecording, startRecording, stopRecording, error };

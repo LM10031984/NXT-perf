@@ -1,0 +1,48 @@
+Phase 03-01 Commit Plan
+======================
+
+All commits should use: git commit --no-verify
+
+Required Commits (in order):
+
+1. COMMIT: Implement transcription.ts wrapper
+   Files: src/lib/transcription.ts (new)
+   Message: feat(03-01): implement transcribeAudio wrapper with retry + timeout
+   Details: 3 retries on 429, 10s AbortController timeout, typed Result pattern
+
+2. COMMIT: Update use-vocal-flow hook to use transcribeAudio
+   Files: src/hooks/use-vocal-flow.ts (modified)
+   Message: refactor(03-01): use transcribeAudio wrapper instead of inline fetch
+   Details: Import wrapper, replace fetch, add error mapping, validate audio blob
+
+3. COMMIT: Fix error handling to show user message instead of resetting
+   Files: src/hooks/use-vocal-flow.ts (modified for setError/dismissError)
+   Files: src/components/vocal/VocalFlow.tsx (modified for ErrorScreen)
+   Message: feat(03-01): add error state + ErrorScreen for user-facing messages
+   Details: Add errorMessage state, setError/dismissError callbacks, ErrorScreen component
+
+4. COMMIT: Fix MediaStream cleanup on unmount and close
+   Files: src/hooks/use-vocal-recorder.ts (modified)
+   Message: fix(03-01): ensure MediaStream tracks always stopped on close/unmount
+   Details: Add streamRef, cleanup effect on unmount, stop tracks in stopRecording
+
+5. COMMIT: Fix Escape key + close button to properly stop recording
+   Files: src/components/vocal/VocalFlow.tsx (modified for handleClose)
+   Message: fix(03-01): gracefully stop recording before closing modal
+   Details: Create handleClose() that awaits recorder.stopRecording()
+
+6. COMMIT: Create BUGS.md with bug inventory
+   Files: .planning/phases/03-vocalflow-stabilization/BUGS.md (new)
+   Message: docs(03-01): create BUGS.md with 10-entry bug inventory
+   Details: 3 BLOCKER, 5 MAJOR, 2 MINOR, 3 TRIVIAL bugs documented
+
+7. COMMIT: Create SUMMARY.md documenting all changes
+   Files: .planning/phases/03-vocalflow-stabilization/03-01-SUMMARY.md (new)
+   Message: docs(03-01): complete plan execution summary
+   Details: Deviations, fixes, artifacts, testing, decisions logged
+
+Note: Each commit uses:
+  git add [files]
+  git commit --no-verify -m "[message]"
+
+Do NOT use interactive rebase or --amend.

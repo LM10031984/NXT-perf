@@ -127,13 +127,23 @@ export function VocalFlow({ onClose, onComplete }: VocalFlowProps) {
   const recorder = useVocalRecorder();
   const { state, currentSection, currentQuestion } = flow;
 
+  // BUG-002, BUG-005 fix: Gracefully stop recording and clean up media tracks on close
+  const handleClose = useCallback(async () => {
+    if (recorder.isRecording) {
+      await recorder.stopRecording();
+    }
+    onClose();
+  }, [recorder, onClose]);
+
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        handleClose();
+      }
     }
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
-  }, [onClose]);
+  }, [handleClose]);
 
   useEffect(() => {
     if (state.step === "done" && onComplete) {
@@ -150,8 +160,9 @@ export function VocalFlow({ onClose, onComplete }: VocalFlowProps) {
           const result = await flow.processAudio(blob);
           flow.submitSectionResult(result);
         } catch (err) {
-          console.error("[vocal] Processing error:", err);
-          flow.startFlow();
+          // BUG-001, BUG-004 fix: Show error message instead of silently restarting
+          const errorMessage = err instanceof Error ? err.message : "Erreur de transcription";
+          flow.setError(errorMessage);
         }
       }
     } else {
@@ -186,7 +197,7 @@ export function VocalFlow({ onClose, onComplete }: VocalFlowProps) {
       <style dangerouslySetInnerHTML={{ __html: VOCAL_STYLES }} />
       <div
         className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
-        onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+        onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
       >
         <div className="flex w-full flex-col rounded-t-2xl border border-border bg-card shadow-[var(--shadow-2)] sm:max-w-lg sm:rounded-[var(--radius-card)] sm:rounded-t-[var(--radius-card)]" style={{ maxHeight: "100dvh", minHeight: state.step === "recording" ? "auto" : undefined }}>
           {/* ── Header ── */}
@@ -211,7 +222,7 @@ export function VocalFlow({ onClose, onComplete }: VocalFlowProps) {
                 </button>
               )}
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 <X className="h-4 w-4" />
@@ -270,6 +281,16 @@ export function VocalFlow({ onClose, onComplete }: VocalFlowProps) {
                 />
               )}
               {state.step === "processing" && <ProcessingScreen />}
+              {state.step === "error" && (
+                <ErrorScreen
+                  message={state.errorMessage || "Une erreur est survenue"}
+                  onDismiss={flow.dismissError}
+                  onRetry={() => {
+                    flow.dismissError();
+                    // User will tap record again to retry
+                  }}
+                />
+              )}
               {state.step === "confirm_null" && currentSection && (
                 <ConfirmNullScreen section={currentSection} onConfirm={flow.nextSection} onRetry={() => flow.startFlow()} />
               )}
@@ -282,7 +303,7 @@ export function VocalFlow({ onClose, onComplete }: VocalFlowProps) {
               {state.step === "recap" && (
                 <RecapScreen results={state.results} onConfirm={flow.confirmAll} onRestart={flow.reset} />
               )}
-              {state.step === "done" && <DoneScreen results={state.results} onClose={onClose} onReset={flow.reset} />}
+              {state.step === "done" && <DoneScreen results={state.results} onClose={handleClose} onReset={flow.reset} />}
             </div>
           </div>
         </div>
@@ -960,6 +981,43 @@ function ReadOnlyDataDisplay({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function ErrorScreen({
+  message,
+  onDismiss,
+  onRetry,
+}: {
+  message: string;
+  onDismiss: () => void;
+  onRetry: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-6 py-8">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
+        <AlertTriangle className="h-7 w-7 text-destructive" />
+      </div>
+      <div className="text-center">
+        <p className="text-base font-medium text-foreground">Erreur</p>
+        <p className="mt-2 text-sm text-muted-foreground">{message}</p>
+      </div>
+      <div className="flex gap-3">
+        <button
+          onClick={onDismiss}
+          className="flex items-center gap-2 rounded-[var(--radius-button)] border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          Annuler
+        </button>
+        <button
+          onClick={onRetry}
+          className="flex items-center gap-2 rounded-[var(--radius-button)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
+        >
+          <RotateCcw className="h-4 w-4" />
+          Réessayer
+        </button>
+      </div>
     </div>
   );
 }

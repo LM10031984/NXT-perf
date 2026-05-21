@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { transcribeAudio } from "@/lib/transcription";
 import { SECTION_ORDER, SECTION_QUESTIONS, generateMissingClarifications, type VocalSection } from "@/lib/vocal-prompts";
 
 interface ExtractedData {
@@ -22,12 +23,13 @@ export interface SectionResult {
   coachTip?: VocalCoachTip | null;
 }
 
-export type FlowStep = "intro" | "recording" | "processing" | "review" | "confirm_null" | "clarification" | "recap" | "done";
+export type FlowStep = "intro" | "recording" | "processing" | "review" | "confirm_null" | "clarification" | "recap" | "done" | "error";
 
 interface VocalFlowState {
   step: FlowStep;
   currentSectionIndex: number;
   results: SectionResult[];
+  errorMessage: string | null;
   settings: {
     ttsEnabled: boolean;
     realtimeFeedback: boolean;
@@ -39,6 +41,7 @@ export function useVocalFlow() {
     step: "intro",
     currentSectionIndex: 0,
     results: [],
+    errorMessage: null,
     settings: {
       ttsEnabled: false,
       realtimeFeedback: true,
@@ -148,40 +151,59 @@ export function useVocalFlow() {
     setState((s) => ({ ...s, step: "done" as const }));
   }, []);
 
+  const setError = useCallback((message: string) => {
+    setState((s) => ({ ...s, step: "error", errorMessage: message }));
+  }, []);
+
+  const dismissError = useCallback(() => {
+    setState((s) => ({
+      ...s,
+      step: "recording",
+      errorMessage: null,
+    }));
+  }, []);
+
   const reset = useCallback(() => {
     setState({
       step: "intro",
       currentSectionIndex: 0,
       results: [],
+      errorMessage: null,
       settings: { ttsEnabled: false, realtimeFeedback: true },
     });
   }, []);
 
-  // Appel API vocal (Groq Whisper + Claude OpenRouter)
+  // Appel API vocal via transcribeAudio wrapper with typed Result + retry + timeout
   const processAudio = useCallback(
     async (audioBlob: Blob): Promise<SectionResult> => {
       if (!currentSection) throw new Error("No current section");
 
-      const formData = new FormData();
-      formData.append("audio", audioBlob);
-      formData.append("section", currentSection);
-
-      const res = await fetch("/api/vocal", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || "Erreur API vocal");
+      // Validate audio blob (BUG-008 fix)
+      if (audioBlob.size === 0) {
+        throw new Error("Recording was empty — please try again");
       }
 
-      const data = await res.json();
+      const result = await transcribeAudio(audioBlob, currentSection, { timeoutMs: 10_000 });
+
+      if (!result.ok) {
+        // Map error types to user-visible messages
+        const errorMap: Record<string, string> = {
+          "rate-limited": "Trop de requêtes — réessayez dans quelques secondes",
+          "timeout": "La transcription a pris trop de temps — réessayez",
+          "audio-invalid": "Audio invalide ou vide — réenregistrez",
+          "unknown": "Erreur de transcription",
+        };
+        throw new Error(errorMap[result.error] || `Erreur : ${result.error}`);
+      }
+
+      const data = result.raw as Record<string, unknown>;
+      const extracted = data.extracted as ExtractedData;
+      const section = data.section as VocalSection;
 
       // Merge LLM clarifications + auto-generated missing clarifications
       const llmClarifications: Array<{ field: string; question: string }> =
-        data.extracted?.needs_clarification ?? [];
-      const autoClarifications = generateMissingClarifications(data.section, data.extracted);
+        ((extracted as Record<string, unknown>)?.needs_clarification as Array<{ field: string; question: string }>) ?? [];
+      const autoClarifications = generateMissingClarifications(section, extracted);
       const allClarifications = [...llmClarifications, ...autoClarifications];
 
       // Deduplicate by field
@@ -193,13 +215,13 @@ export function useVocalFlow() {
       });
 
       return {
-        section: data.section,
-        transcript: data.transcript,
-        extracted: data.extracted,
+        section,
+        transcript: data.transcript as string,
+        extracted,
         needsClarification: uniqueClarifications,
-        allNull: data.extracted?.all_null ?? false,
+        allNull: ((extracted as Record<string, unknown>)?.all_null as boolean) ?? false,
         // Sous-PR Coach-12 : tip Coach NXT Tedesco optionnel (null si fail).
-        coachTip: data.coachTip ?? null,
+        coachTip: (data.coachTip as VocalCoachTip) ?? null,
       };
     },
     [currentSection]
@@ -218,6 +240,8 @@ export function useVocalFlow() {
     nextSection,
     confirmAll,
     reset,
+    setError,
+    dismissError,
     processAudio,
   };
 }
