@@ -45,13 +45,17 @@ test.describe("VocalFlow — Saisie vocale E2E", () => {
     });
 
     test("1.1 — /saisie accessible en démo", async ({ page }) => {
-      test.skip(true, "TODO 03-02: fill after CTA exists");
+      await page.goto("/saisie");
+      await expect(page.locator("body")).toBeVisible({ timeout: 10_000 });
+      const text = await page.locator("body").textContent();
+      expect(text!.length).toBeGreaterThan(10);
     });
 
     test("1.2 — Bouton 'Commencer le bilan' visible sur /saisie", async ({
       page,
     }) => {
-      test.skip(true, "TODO 03-02");
+      await page.goto("/saisie");
+      await expect(page.getByRole("button", { name: /Démarrer mon bilan/i })).toBeVisible({ timeout: 10_000 });
     });
   });
 
@@ -67,13 +71,18 @@ test.describe("VocalFlow — Saisie vocale E2E", () => {
     test("2.1 — CTA 'Saisir mes chiffres à la voix' visible sur /dashboard", async ({
       page,
     }) => {
-      test.skip(true, "TODO 03-02: requires CTA from plan 03-02");
+      await page.goto("/dashboard?gate=demo");
+      await expect(page.getByRole("button", { name: /Saisir mes chiffres à la voix/i })).toBeVisible({ timeout: 10_000 });
     });
 
     test("2.2 — Cliquer le CTA ouvre le drawer VocalFlow", async ({
       page,
     }) => {
-      test.skip(true, "TODO 03-02");
+      await page.goto("/dashboard?gate=demo");
+      await page.getByRole("button", { name: /Saisir mes chiffres à la voix/i }).click();
+      await expect(page.getByText(/NXT Vocal|Bilan vocal/i)).toBeVisible({ timeout: 5_000 });
+      // Verify close button exists
+      await expect(page.getByRole("button", { name: /fermer|close/i }).first()).toBeVisible({ timeout: 5_000 });
     });
   });
 
@@ -89,19 +98,19 @@ test.describe("VocalFlow — Saisie vocale E2E", () => {
     test("3.1 — Étape 'recording' → appui sur mic → passe en 'processing'", async ({
       page,
     }) => {
-      test.skip(true, "TODO 03-02: mock MediaRecorder or test via page.evaluate");
+      test.skip(true, "TODO: requires MediaRecorder mock — Phase 6 training test infrastructure");
     });
 
     test("3.2 — Étape 'review' affiche la transcription et les champs numériques", async ({
       page,
     }) => {
-      test.skip(true, "TODO 03-02");
+      test.skip(true, "TODO: requires MediaRecorder mock — Phase 6 training test infrastructure");
     });
 
     test("3.3 — 'Valider et enregistrer' déclenche onComplete avec données", async ({
       page,
     }) => {
-      test.skip(true, "TODO 03-02");
+      test.skip(true, "TODO: requires MediaRecorder mock — Phase 6 training test infrastructure");
     });
   });
 });

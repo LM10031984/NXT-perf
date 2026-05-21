@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { useWeeklyGate } from "@/hooks/use-weekly-gate";
 import { useUser } from "@/hooks/use-user";
+import { VocalDrawer } from "@/components/vocal/VocalDrawer";
 import { WeeklyGateWrapper } from "@/components/dashboard/weekly-gate-wrapper";
 import { DiagnosticVerdictView } from "@/components/conseiller/diagnostic/diagnostic-verdict-view";
 import { DiagnosticRatiosView } from "@/components/conseiller/diagnostic/diagnostic-ratios-view";
@@ -57,6 +58,9 @@ function DiagnosticRouter() {
           Mon diagnostic
         </div>
         <h1 className="text-3xl font-bold text-foreground">Mon diagnostic</h1>
+        <div className="mt-4">
+          <VocalDrawer />
+        </div>
         {view === "ratios" && (
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Détail de vos ratios métier.
