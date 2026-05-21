@@ -34,7 +34,7 @@
 
 ### RAG Grounding (RAG)
 
-- [ ] **RAG-01**: Copilot uses existing `retrieveHybrid()` from `src/lib/server/coach-rag/retrieve.ts` (no new vector DB)
+- [x] **RAG-01**: Copilot uses existing `retrieveHybrid()` from `src/lib/server/coach-rag/retrieve.ts` (no new vector DB)
 - [ ] **RAG-02**: Every grounded response displays "Source: [filename]" with Drive link when metadata available
 - [ ] **RAG-03**: Retrieval threshold = 0.75 cosine similarity; returns 0 chunks rather than weak chunks
 - [ ] **RAG-04**: System prompt explicitly says "Je n'ai pas d'exemple pertinent" when grounding is thin (no extrapolation)
@@ -105,7 +105,7 @@
 | DATA-02 | Phase 1 | Complete |
 | COPILOT-07 | Phase 1 | Complete |
 | COPILOT-08 | Phase 1 | Complete |
-| RAG-01 | Phase 1 | Pending |
+| RAG-01 | Phase 1 | Complete |
 | RAG-05 | Phase 1 | Complete |
 | TRAIN-04 | Phase 1 | Complete |
 | COPILOT-04 | Phase 2 | Pending |

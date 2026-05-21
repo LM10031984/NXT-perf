@@ -12,7 +12,7 @@ Ce milestone transforme NXT Performance d'un cockpit de chiffres en un copilote 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Context Layer + Data Hygiene** - Fondations pures : types copilote, buildCopilotContext(), data-access layer, training scenarios
+- [x] **Phase 1: Context Layer + Data Hygiene** - Fondations pures : types copilote, buildCopilotContext(), data-access layer, training scenarios (completed 2026-05-21)
 - [ ] **Phase 2: Streaming API + RAG Grounding** - Route /api/copilot/stream opérationnelle avec RAG hybride et guardrails
 - [ ] **Phase 3: VocalFlow Stabilization** - Bugs transcription corrigés, E2E test safenet, saisie promu en CTA dashboard
 - [ ] **Phase 4: Copilot UI** - FloatingCopilote remplace le stub, suggestion-first, chat drawer, streaming visible
@@ -38,7 +38,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   - [x] 01-02-PLAN.md — data-access layer + 3 mock-bypass component migrations (DATA-01, DATA-02 partial)
   - [x] 01-03-PLAN.md — Separate copilot-store Zustand store + isolation grep test (COPILOT-08)
   - [x] 01-04-PLAN.md — SITUATION_PERSONA_MAP + persona enums in constants.ts (TRAIN-04)
-  - [ ] 01-05-PLAN.md — Live RAG health endpoint + ventes-tab chart-fixtures migration (RAG-01, RAG-05, DATA-02 final)
+  - [x] 01-05-PLAN.md — Live RAG health endpoint + ventes-tab chart-fixtures migration (RAG-01, RAG-05, DATA-02 final)
 
 ### Phase 2: Streaming API + RAG Grounding
 **Goal**: Le serveur peut répondre au copilote en streaming SSE avec des chunks RAG ancrés, des guardrails loi Hoguet, et un mode demo qui ne touche jamais Anthropic
@@ -125,7 +125,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Context Layer + Data Hygiene | 0/6 | Not started | - |
+| 1. Context Layer + Data Hygiene | 6/6 | Complete   | 2026-05-21 |
 | 2. Streaming API + RAG Grounding | 0/TBD | Not started | - |
 | 3. VocalFlow Stabilization | 0/TBD | Not started | - |
 | 4. Copilot UI | 0/TBD | Not started | - |
