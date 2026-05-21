@@ -51,7 +51,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Si la similarité cosinus est < 0.75, le LLM reçoit 0 chunk et le prompt instruit "Je n'ai pas d'exemple pertinent"
   5. Toute réponse contenant une source affiche "Source: [filename]" avec lien Drive quand disponible
   6. Le system prompt refuse explicitement la génération de contenu contractuel (guardrail loi Hoguet)
-**Plans**: TBD
+**Plans**: 4 plans
+  - [ ] 02-00-PLAN.md — Wave 0 stubs (system-prompt test stub + stream route test stub + 501 POST/405 GET route stub) for Nyquist sampling continuity (COPILOT-09)
+  - [ ] 02-01-PLAN.md — Extend system-prompt.ts additively : formatUserContext + <rag-source> wrapping + <contract-policy> Hoguet + <grounding-state> + STRONG_CHUNK_THRESHOLD helpers (RAG-04, RAG-06, COPILOT-10)
+  - [ ] 02-02-PLAN.md — Live POST /api/copilot/stream : auth + rate-limit + demo short-circuit + RAG filter + OpenRouter SSE pass-through + 30s timeout + abort propagation (COPILOT-04, COPILOT-06, COPILOT-09, COPILOT-11, RAG-02, RAG-03)
+  - [ ] 02-03-PLAN.md — Manual UAT against running dev server + write 02-UAT.md cross-checking all 6 ROADMAP criteria (COPILOT-04, COPILOT-06, COPILOT-10, COPILOT-11, RAG-02, RAG-04)
 
 ### Phase 3: VocalFlow Stabilization
 **Goal**: La saisie vocale est fiable, protégée par un E2E test, et visible depuis le dashboard — base stable pour le training vocal de la Phase 6
@@ -62,7 +66,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `src/lib/transcription.ts` wrapper Groq existe avec : Result typé, 3 retries sur 429, timeout 10s
   3. Un test Playwright E2E couvre le flow complet : agent parle → chiffres extraits → ratios recalculés → dashboard mis à jour
   4. Un CTA "Saisie vocale" est visible sur le dashboard conseiller sans naviguer vers `/saisie`
-**Plans**: TBD
+**Plans**: 3 plans
+  - [x] 03-00-PLAN.md — Wave 0 stubs (transcription.ts skeleton + E2E spec scaffold) (VOICE-02, VOICE-04)
+  - [ ] 03-01-PLAN.md — Bug inventory (BUGS.md) + transcription.ts implementation + VocalFlow.tsx fixes (VOICE-01, VOICE-02)
+  - [ ] 03-02-PLAN.md — Dashboard CTA (VocalDrawer) + E2E spec filled in (VOICE-03, VOICE-04)
 **UI hint**: yes
 
 ### Phase 4: Copilot UI
@@ -115,7 +122,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `ConseillerRegistrationWizard` est un composant isolé (3-4 étapes : Rôle → Code/Org → Détails → Confirmation) avec indicateur de progression et bouton "Retour" à chaque étape
   3. Les flows manager/directeur/coach/reseau dans `register/page.tsx` restent inchangés et leur E2E test continue de passer
   4. Un nouvel utilisateur conseiller peut compléter l'inscription de bout en bout via le wizard
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 07-00-PLAN.md — Wave 0 stubs (store squelette + 7 composants squelettes + spec E2E vide) (ONBO-01, ONBO-03, ONBO-04)
+  - [ ] 07-01-PLAN.md — E2E safety-net non-conseiller passing sur code actuel inchangé (ONBO-03)
+  - [ ] 07-02-PLAN.md — Wizard 4 étapes complet + montage conditionnel register/page.tsx + E2E wizard (ONBO-01, ONBO-02, ONBO-04)
 **UI hint**: yes
 
 ## Progress
@@ -126,9 +136,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Context Layer + Data Hygiene | 6/6 | Complete   | 2026-05-21 |
-| 2. Streaming API + RAG Grounding | 0/TBD | Not started | - |
-| 3. VocalFlow Stabilization | 0/TBD | Not started | - |
+| 2. Streaming API + RAG Grounding | 0/4 | Planned | - |
+| 3. VocalFlow Stabilization | 1/3 | In Progress | - |
 | 4. Copilot UI | 0/TBD | Not started | - |
 | 5. Dashboard "Clin d'oeil" | 0/TBD | Not started | - |
 | 6. Training Vocal Module | 0/TBD | Not started | - |
-| 7. Onboarding Wizard | 0/TBD | Not started | - |
+| 7. Onboarding Wizard | 0/3 | Planned | - |
