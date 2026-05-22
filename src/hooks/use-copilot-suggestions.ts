@@ -14,7 +14,7 @@ const SUGGESTION_TTL_MS = 10 * 60 * 1000; // 10 min (D1)
  * Used for TTL invalidation when ratios change.
  */
 export function computeRatioSignature(ratios: ComputedRatio[]): string {
-  return ratios.map((r) => `${r.id}:${r.status}`).join("|");
+  return ratios.map((r) => `${r.ratioId}:${r.status}`).join("|");
 }
 
 interface UseCopilotSuggestionsResult {
