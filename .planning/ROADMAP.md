@@ -81,7 +81,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Cliquer une suggestion ou taper un message ouvre un chat drawer/overlay (collapsed par défaut)
   3. Les tokens streamés s'affichent progressivement — aucune réponse bloquante > 1 seconde visible
   4. Les réponses copilote incluent des boutons d'action typés (training, profiling, saisie) qui redirigent vers les routes correctes
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 04-00-PLAN.md — Wave 0 skeletons (hook + 3 component stubs) (COPILOT-01, COPILOT-02, COPILOT-03)
+  - [ ] 04-01-PLAN.md — use-copilot-stream hook + CopilotChatDrawer + CopilotMessageList + floating-copilote stub replaced (COPILOT-01, COPILOT-03)
+  - [ ] 04-02-PLAN.md — CopilotSuggestionCards (rule-based) + diagnostic page mount + openWithPrompt wiring (COPILOT-02, COPILOT-05)
 **UI hint**: yes
 
 ### Phase 5: Dashboard "Clin d'oeil"
@@ -138,7 +141,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Context Layer + Data Hygiene | 6/6 | Complete   | 2026-05-21 |
 | 2. Streaming API + RAG Grounding | 0/4 | Planned | - |
 | 3. VocalFlow Stabilization | 1/3 | In Progress | - |
-| 4. Copilot UI | 0/TBD | Not started | - |
+| 4. Copilot UI | 0/3 | Planned | - |
 | 5. Dashboard "Clin d'oeil" | 0/TBD | Not started | - |
 | 6. Training Vocal Module | 0/TBD | Not started | - |
 | 7. Onboarding Wizard | 0/3 | Planned | - |
