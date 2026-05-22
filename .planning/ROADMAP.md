@@ -13,12 +13,12 @@ Ce milestone transforme NXT Performance d'un cockpit de chiffres en un copilote 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Context Layer + Data Hygiene** - Fondations pures : types copilote, buildCopilotContext(), data-access layer, training scenarios (completed 2026-05-21)
-- [ ] **Phase 2: Streaming API + RAG Grounding** - Route /api/copilot/stream opérationnelle avec RAG hybride et guardrails
-- [ ] **Phase 3: VocalFlow Stabilization** - Bugs transcription corrigés, E2E test safenet, saisie promu en CTA dashboard
+- [x] **Phase 2: Streaming API + RAG Grounding** - Route /api/copilot/stream opérationnelle avec RAG hybride et guardrails (code-complete 2026-05-22, UAT live pending real Supabase session)
+- [x] **Phase 3: VocalFlow Stabilization** - Bugs transcription corrigés, E2E test safenet, saisie promu en CTA dashboard (completed 2026-05-22, verified 4/4 SCs)
 - [ ] **Phase 4: Copilot UI** - FloatingCopilote remplace le stub, suggestion-first, chat drawer, streaming visible
 - [ ] **Phase 5: Dashboard "Clin d'oeil"** - Top 3 priorités hiérarchisées + actions + bouton tour, deep-links vers tous les outils
 - [ ] **Phase 6: Training Vocal Module** - Route training/[situation] opérationnelle, au moins 1 scénario mandats shipé
-- [ ] **Phase 7: Onboarding Wizard** - ConseillerRegistrationWizard 3-4 étapes, autres rôles inchangés, E2E safenet
+- [x] **Phase 7: Onboarding Wizard** - ConseillerRegistrationWizard 3-4 étapes, autres rôles inchangés, E2E safenet (completed 2026-05-22, verified 4/4 SCs)
 
 ## Phase Details
 
