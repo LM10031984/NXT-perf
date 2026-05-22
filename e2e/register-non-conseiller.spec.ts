@@ -122,27 +122,102 @@ test.describe("Inscription conseiller — code invitation optionnel", () => {
 
 test.describe("Wizard conseiller — happy path", () => {
   test("Étape 1 : affiche 'Quel est votre rôle ?'", async ({ page }) => {
-    // TODO (plan 07-02): implémenter après montage conditionnel
-    test.skip();
+    // Arrange
+    await page.goto("/register");
+
+    // Assert
+    await expect(page.getByText("Quel est votre rôle ?")).toBeVisible({
+      timeout: 10_000,
+    });
+    await expect(page.getByText("Étape 1 sur 4")).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
-  test("Étape 2 : affiche les options org après clic 'Je suis agent immobilier'", async ({ page }) => {
-    // TODO (plan 07-02): implémenter
-    test.skip();
+  test("Étape 2 : affiche les options org après clic 'Je suis agent immobilier'", async ({
+    page,
+  }) => {
+    // Arrange
+    await page.goto("/register");
+    await expect(page.getByText("Quel est votre rôle ?")).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // Act
+    await page.getByTestId("wizard-role-agent-btn").click();
+
+    // Assert
+    await expect(page.getByText("Étape 2 sur 4")).toBeVisible({
+      timeout: 5_000,
+    });
+    await expect(page.getByTestId("wizard-org-join-btn")).toBeVisible({
+      timeout: 5_000,
+    });
+    await expect(page.getByTestId("wizard-org-create-btn")).toBeVisible({
+      timeout: 5_000,
+    });
   });
 
-  test("L'indicateur de progression affiche 'Étape N sur 4'", async ({ page }) => {
-    // TODO (plan 07-02): implémenter
-    test.skip();
+  test("L'indicateur de progression affiche 'Étape N sur 4'", async ({
+    page,
+  }) => {
+    // Arrange
+    await page.goto("/register");
+    await expect(page.getByText("Quel est votre rôle ?")).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // Assert
+    await expect(page.getByText("Étape 1 sur 4")).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // Act
+    await page.getByTestId("wizard-role-agent-btn").click();
+
+    // Assert
+    await expect(page.getByText("Étape 2 sur 4")).toBeVisible({
+      timeout: 5_000,
+    });
   });
 
-  test("Le bouton Retour à l'étape 2 revient à l'étape 1", async ({ page }) => {
-    // TODO (plan 07-02): implémenter
-    test.skip();
+  test("Le bouton Retour à l'étape 2 revient à l'étape 1", async ({
+    page,
+  }) => {
+    // Arrange
+    await page.goto("/register");
+    await expect(page.getByText("Quel est votre rôle ?")).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // Act
+    await page.getByTestId("wizard-role-agent-btn").click();
+    await expect(page.getByText("Étape 2 sur 4")).toBeVisible({
+      timeout: 5_000,
+    });
+
+    // Act — clic sur Retour à l'étape 2
+    await page.getByTestId("wizard-org-back").click();
+
+    // Assert
+    await expect(page.getByText("Étape 1 sur 4")).toBeVisible({
+      timeout: 5_000,
+    });
   });
 
-  test("Le bouton Retour à l'étape 1 pointe vers /login", async ({ page }) => {
-    // TODO (plan 07-02): implémenter
-    test.skip();
+  test("Le bouton Retour à l'étape 1 pointe vers /login", async ({
+    page,
+  }) => {
+    // Arrange
+    await page.goto("/register");
+    await expect(page.getByText("Quel est votre rôle ?")).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // Act
+    await page.getByTestId("wizard-back-to-login").click();
+
+    // Assert
+    await expect(page).toHaveURL(/\/login/, { timeout: 5_000 });
   });
 });

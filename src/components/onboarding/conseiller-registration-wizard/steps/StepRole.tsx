@@ -13,8 +13,9 @@ export function StepRole() {
         Quel est votre rôle ?
       </h1>
       <p className="text-center text-sm text-muted-foreground">
-        {/* TODO (plan 02): implement role selection — single conseiller path + redirect for other roles */}
+        Sélectionnez votre profil pour commencer l'inscription.
       </p>
+
       <button
         type="button"
         onClick={() => goToStep("org_choice")}
@@ -23,10 +24,12 @@ export function StepRole() {
       >
         Je suis agent immobilier
       </button>
+
       <button
         type="button"
         onClick={() => router.push("/login")}
-        className="w-full text-center text-sm text-muted-foreground hover:text-foreground"
+        className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+        data-testid="wizard-back-to-login"
       >
         Retour
       </button>

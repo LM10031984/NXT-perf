@@ -10,6 +10,7 @@ import { useAppStore } from "@/stores/app-store";
 import { CATEGORY_LABELS } from "@/lib/constants";
 import { Check, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { generateSecurePassword, getPasswordStrength } from "@/lib/password-utils";
+import { ConseillerRegistrationWizard } from "@/components/onboarding/conseiller-registration-wizard";
 
 const ROLE_LABELS: Record<UserRole, string> = {
   conseiller: "Conseiller",
@@ -252,6 +253,16 @@ function RegisterForm() {
 
   const inputClassName =
     "h-10 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring";
+
+  // Wizard conseiller — mount conditionnel (per D1, D2 dans 07-CONTEXT.md)
+  // Critères : pas de code d'invitation dans l'URL ET profil AGENT ou visite directe
+  const isConseillerWizardMode =
+    !roleLocked &&
+    (derivedProfile === "AGENT" || (!derivedProfile && !profileParam && !legacyRole));
+
+  if (isConseillerWizardMode) {
+    return <ConseillerRegistrationWizard />;
+  }
 
   return (
     <div className="rounded-xl border border-border bg-card p-8">
