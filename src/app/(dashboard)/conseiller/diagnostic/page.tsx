@@ -5,11 +5,16 @@ import { useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { useWeeklyGate } from "@/hooks/use-weekly-gate";
 import { useUser } from "@/hooks/use-user";
+import { useRatios } from "@/hooks/use-ratios";
+import { useCopilotSuggestions } from "@/hooks/use-copilot-suggestions";
+import { useCopilotStore } from "@/stores/copilot-store";
 import { VocalDrawer } from "@/components/vocal/VocalDrawer";
+import { CopilotSuggestionCards } from "@/components/conseiller/copilot/CopilotSuggestionCards";
 import { WeeklyGateWrapper } from "@/components/dashboard/weekly-gate-wrapper";
 import { DiagnosticVerdictView } from "@/components/conseiller/diagnostic/diagnostic-verdict-view";
 import { DiagnosticRatiosView } from "@/components/conseiller/diagnostic/diagnostic-ratios-view";
 import { DiagnosticVolumesView } from "@/components/conseiller/diagnostic/diagnostic-volumes-view";
+import type { SuggestionCard } from "@/types/copilot";
 
 export default function DiagnosticPage() {
   return (
@@ -31,6 +36,18 @@ function DiagnosticRouter() {
     dismissGate,
     markSaisieDone,
   } = useWeeklyGate();
+
+  const { computedRatios } = useRatios();
+  const { suggestions } = useCopilotSuggestions(computedRatios);
+  const { openCopilot, setPrompt } = useCopilotStore((s) => ({
+    openCopilot: s.openCopilot,
+    setPrompt: s.setPrompt,
+  }));
+
+  const handleSuggestionSelect = (card: SuggestionCard) => {
+    setPrompt(card.prompt);
+    openCopilot();
+  };
 
   if (!user) {
     return (
@@ -77,6 +94,12 @@ function DiagnosticRouter() {
           </p>
         )}
       </header>
+
+      <CopilotSuggestionCards
+        suggestions={suggestions}
+        onSelect={handleSuggestionSelect}
+        className="mx-auto max-w-6xl px-4"
+      />
 
       {view === "ratios" ? (
         <DiagnosticRatiosView highlightedItem={highlight} />

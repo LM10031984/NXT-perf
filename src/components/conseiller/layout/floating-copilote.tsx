@@ -1,28 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Bot } from "lucide-react";
 import { CopilotChatDrawer } from "@/components/conseiller/copilot/CopilotChatDrawer";
+import { useCopilotStore } from "@/stores/copilot-store";
 
 export function FloatingCopilote() {
-  const [open, setOpen] = useState(false);
-  const [initialPrompt, setInitialPrompt] = useState<string | undefined>();
+  const { isOpen, pendingPrompt, openCopilot, closeCopilot } = useCopilotStore((s) => ({
+    isOpen: s.isOpen,
+    pendingPrompt: s.pendingPrompt,
+    openCopilot: s.openCopilot,
+    closeCopilot: s.closeCopilot,
+  }));
 
   // Lock body scroll while drawer open
   useEffect(() => {
-    if (!open) return;
+    if (!isOpen) return;
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = original;
     };
-  }, [open]);
+  }, [isOpen]);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => openCopilot()}
         aria-label="Ouvrir le Copilote"
         data-tour="floating-copilote"
         className="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-105 hover:shadow-xl"
@@ -31,9 +36,9 @@ export function FloatingCopilote() {
       </button>
 
       <CopilotChatDrawer
-        open={open}
-        onClose={() => setOpen(false)}
-        initialPrompt={initialPrompt}
+        open={isOpen}
+        onClose={closeCopilot}
+        initialPrompt={pendingPrompt}
       />
     </>
   );

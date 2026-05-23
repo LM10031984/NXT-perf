@@ -20,11 +20,17 @@ interface CopilotState {
   suggestionsLastFetchedAt: number | null;
   suggestionsForRatioSignature: string | null;
 
+  isOpen: boolean;
+  pendingPrompt: string | undefined;
+
   appendDelta: (delta: string) => void;
   startStream: (controller: AbortController) => void;
   endStream: () => void;
   setSuggestions: (cards: SuggestionCard[], signature: string) => void;
   addUserMessage: (content: string) => void;
+  openCopilot: () => void;
+  closeCopilot: () => void;
+  setPrompt: (prompt: string | undefined) => void;
   reset: () => void;
 }
 
@@ -35,6 +41,8 @@ export const useCopilotStore = create<CopilotState>((set) => ({
   suggestions: [],
   suggestionsLastFetchedAt: null,
   suggestionsForRatioSignature: null,
+  isOpen: false,
+  pendingPrompt: undefined,
 
   appendDelta: (delta) =>
     set((s) => {
@@ -74,6 +82,12 @@ export const useCopilotStore = create<CopilotState>((set) => ({
         { role: "user" as const, content, createdAt: Date.now() },
       ],
     })),
+
+  openCopilot: () => set({ isOpen: true }),
+
+  closeCopilot: () => set({ isOpen: false, pendingPrompt: undefined }),
+
+  setPrompt: (prompt) => set({ pendingPrompt: prompt }),
 
   reset: () =>
     set({

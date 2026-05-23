@@ -16,6 +16,7 @@ import {
   LineChart,
   Users,
   Fingerprint,
+  Mic2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppStore, getVisibleViews } from "@/stores/app-store";
@@ -47,6 +48,12 @@ const navItems: NavItem[] = [
   // de sa data sans saisie additionnelle. Place a la fin de la section
   // conseiller pour ne pas perturber les habitudes du parcours principal.
   { href: "/conseiller/identite", icon: Fingerprint, label: "Mon identité" },
+  {
+    href: "/conseiller/training/mandats",
+    icon: Mic2,
+    label: "Training vocal",
+    separatorBefore: true,
+  },
   // PR3.8.1 — refonte Manager alignée sur la nav Conseiller V3.
   // Anciennes entrées (Tableau de bord / Mon Volume / Mes Ratios) absorbées
   // par "Mon diagnostic". Routes legacy redirigées via next.config.ts.
@@ -157,7 +164,18 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {advisorItems.length > 0 && (
         <SidebarSection label="Conseiller" collapsed={collapsed}>
           {advisorItems.map((item) => (
-            <SidebarItem key={item.href} item={item} pathname={pathname} collapsed={collapsed} />
+            <Fragment key={item.href}>
+              {item.separatorBefore && (
+                <div
+                  className={cn(
+                    collapsed
+                      ? "my-2 mx-auto h-px w-8 bg-sidebar-border"
+                      : "my-2 border-t border-sidebar-border",
+                  )}
+                />
+              )}
+              <SidebarItem item={item} pathname={pathname} collapsed={collapsed} />
+            </Fragment>
           ))}
         </SidebarSection>
       )}

@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { type SituationType, SITUATION_PERSONA_MAP } from "@/lib/constants";
+import { type SituationType } from "@/lib/constants";
 import { mandatsScenario } from "@/data/training-scenarios/mandats";
+import { ScenarioRunner } from "@/components/training/ScenarioRunner";
 
 const VALID_SITUATIONS: SituationType[] = [
   "mandats",
@@ -50,16 +51,14 @@ export default function TrainingPage({ params }: TrainingPageProps) {
   }
 
   // situation === "mandats"
-  const scenario = mandatsScenario;
-
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-2">{scenario.title}</h1>
-      <p className="text-muted-foreground mb-6">{scenario.description}</p>
-      {/* ScenarioRunner monté en plan 06-02 */}
-      <div className="rounded-lg border border-border bg-muted/30 p-6 text-center text-sm text-muted-foreground">
-        Moteur de scénario en cours de construction — plan 06-01
+      <div className="mb-6">
+        <Link href="/conseiller/diagnostic" className="text-sm text-muted-foreground hover:text-foreground">
+          ← Retour
+        </Link>
       </div>
+      <ScenarioRunner scenario={mandatsScenario} />
     </div>
   );
 }
