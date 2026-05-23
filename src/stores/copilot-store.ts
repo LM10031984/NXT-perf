@@ -24,6 +24,7 @@ interface CopilotState {
   startStream: (controller: AbortController) => void;
   endStream: () => void;
   setSuggestions: (cards: SuggestionCard[], signature: string) => void;
+  addUserMessage: (content: string) => void;
   reset: () => void;
 }
 
@@ -65,6 +66,14 @@ export const useCopilotStore = create<CopilotState>((set) => ({
       suggestionsLastFetchedAt: Date.now(),
       suggestionsForRatioSignature: signature,
     }),
+
+  addUserMessage: (content) =>
+    set((s) => ({
+      messages: [
+        ...s.messages,
+        { role: "user" as const, content, createdAt: Date.now() },
+      ],
+    })),
 
   reset: () =>
     set({
