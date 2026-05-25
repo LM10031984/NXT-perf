@@ -97,7 +97,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Les boutons d'action deep-linkent vers le bon outil avec les bons paramètres (training/[situation], copilote pré-rempli, etc.)
   4. L'icône "?" dans le header relance le guided tour depuis l'étape 1
   5. Les pages existantes du conseiller (`resultats/`, `performance/`, `comparaison/`, `saisie/`, `formation/`, `objectifs/`) restent accessibles et fonctionnelles
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 05-00-PLAN.md — Wave 0 skeletons (dashboard-priorities.ts types + Top3PrioritesSection stub) (DASH-01, DASH-02, DASH-03, DASH-04)
+  - [ ] 05-01-PLAN.md — derivePriorityCards implémenté + UI complète + montage dans diagnostic/page.tsx (DASH-01, DASH-02, DASH-03, DASH-04, DASH-06)
+  - [ ] 05-02-PLAN.md — Header "?" tour CTA vérification/finalisation (DASH-05, DASH-06)
 **UI hint**: yes
 
 ### Phase 6: Training Vocal Module
@@ -142,6 +145,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Streaming API + RAG Grounding | 0/4 | Planned | - |
 | 3. VocalFlow Stabilization | 1/3 | In Progress | - |
 | 4. Copilot UI | 0/3 | Planned | - |
-| 5. Dashboard "Clin d'oeil" | 0/TBD | Not started | - |
+| 5. Dashboard "Clin d'oeil" | 0/3 | Planned | - |
 | 6. Training Vocal Module | 0/TBD | Not started | - |
 | 7. Onboarding Wizard | 0/3 | Planned | - |
