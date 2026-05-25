@@ -9,6 +9,7 @@ import { useRatios } from "@/hooks/use-ratios";
 import { useCopilotSuggestions } from "@/hooks/use-copilot-suggestions";
 import { useCopilotStore } from "@/stores/copilot-store";
 import { VocalDrawer } from "@/components/vocal/VocalDrawer";
+import { Top3PrioritesSection } from "@/components/conseiller/dashboard/Top3PrioritesSection";
 import { CopilotSuggestionCards } from "@/components/conseiller/copilot/CopilotSuggestionCards";
 import { WeeklyGateWrapper } from "@/components/dashboard/weekly-gate-wrapper";
 import { DiagnosticVerdictView } from "@/components/conseiller/diagnostic/diagnostic-verdict-view";
@@ -94,6 +95,8 @@ function DiagnosticRouter() {
           </p>
         )}
       </header>
+
+      <Top3PrioritesSection />
 
       <CopilotSuggestionCards
         suggestions={suggestions}
