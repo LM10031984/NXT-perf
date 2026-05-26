@@ -72,6 +72,60 @@
 
 ---
 
+## v1.1 Requirements (Milestone 2 — Coach Brain + Vocal Coach Refonte)
+
+### Coach Brain — Méthode & System Prompt (METHOD)
+
+- [ ] **METHOD-01**: `data/coaching-method.md` (extrait de nxt-coach) est rapatrié dans `src/data/coaching-method/` et versionné dans le repo
+- [ ] **METHOD-02**: `buildSystemPrompt()` (Phase 2 existing) est étendu pour injecter la méthode coaching dans une section dédiée `<coaching-method>...</coaching-method>` du system prompt
+- [ ] **METHOD-03**: Le copilote chat répond systématiquement en cohérence avec la méthode (vérification : un test compare réponse-avec-méthode vs réponse-sans, sur 3 prompts standards)
+- [ ] **METHOD-04**: La méthode est versionnée (date, version, source) — quand elle est mise à jour on peut tracer
+
+### Coach Brain — Ingest Pipeline (INGEST)
+
+- [ ] **INGEST-01**: Script `scripts/ingest-coach-corpus.ts` qui accepte un dossier `sources/` (PDF/DOCX/TXT/audio/vidéo/YouTube) et indexe le contenu dans Supabase pgvector
+- [ ] **INGEST-02**: Extractors portés depuis `lib/extractors.ts` de nxt-coach (PDF, DOCX, TXT, audio via Groq Whisper, vidéo via Groq Whisper + ffmpeg, YouTube via yt-dlp)
+- [ ] **INGEST-03**: Chunking porté depuis `lib/chunking.ts` (chunks de 400 tokens max, overlap 50, métadonnées de source)
+- [ ] **INGEST-04**: Anonymisation portée depuis `lib/anonymize.ts` (noms, adresses, téléphones, emails redacted avant indexation)
+- [ ] **INGEST-05**: Synthèse longue portée depuis `lib/synthesize.ts` + `lib/synthesize-long.ts` pour les sessions coaching 1h+ (résumé indexé séparément avec lien vers chunks détaillés)
+- [ ] **INGEST-06**: Embeddings via OpenRouter (`text-embedding-3-small`, existing) — pas de nomic-embed local
+- [ ] **INGEST-07**: Re-indexation idempotente : si un fichier est ré-ingéré, on detect duplicate (hash) et on ne crée pas de doublon
+- [ ] **INGEST-08**: Documentation du flow d'ingestion dans `scripts/README-ingest.md`
+
+### Coach Brain — RAG & LLM (RAG2)
+
+- [ ] **RAG2-01**: RAG retrieval porté/augmenté depuis `lib/rag.ts` de nxt-coach (si plus sophistiqué que l'actuel `retrieveHybrid()`)
+- [ ] **RAG2-02**: Benchmark des modèles OpenRouter pour le copilote chat : Claude Haiku 3.5 vs GPT-4o-mini vs Gemini 1.5 Flash vs Mistral. Critères : qualité coaching FR, coût per-token, latency first-token. Résultat documenté dans `docs/llm-benchmark.md`.
+- [ ] **RAG2-03**: Le modèle par défaut du copilote (`COACH_RAG_DEFAULT_MODEL` env var) bascule vers le modèle gagnant du benchmark
+- [ ] **RAG2-04**: Le modèle reste configurable via env var pour fallback rapide
+
+### Vocal Coach — Gemini Live Foundation (VLIVE)
+
+- [ ] **VLIVE-01**: `src/hooks/use-gemini-live.ts` porté depuis `Train-my-agent/hooks/useGeminiLive.ts` — WebSocket full-duplex vers Gemini Live API
+- [ ] **VLIVE-02**: AudioWorklet setup porté depuis `Train-my-agent/components/AudioWorkletTest.tsx` — gestion audio fine sans latency
+- [ ] **VLIVE-03**: `src/components/training/MicTestScreen.tsx` porté — onboarding audio (test micro avant scenario)
+- [ ] **VLIVE-04**: Configuration `GEMINI_API_KEY` et `GEMINI_LIVE_MODEL` (env vars déjà partiellement présentes)
+- [ ] **VLIVE-05**: Permission micro demandée explicitement avec écran de fallback si refusée
+
+### Vocal Coach — Scenarios & UI (VCOACH)
+
+- [ ] **VCOACH-01**: Les 20+ scenarios JSON de `Train-my-agent/scenarios/` sont rapatriés dans `src/data/training-scenarios/v2/` (nouveau format)
+- [ ] **VCOACH-02**: `src/components/training/VocalCoachScreen.tsx` porté depuis Train-my-agent — remplace ScenarioRunner de M1 Phase 6
+- [ ] **VCOACH-03**: `src/components/training/VocalCoachDebriefScreen.tsx` porté — debrief LLM-évalué, pas matching keywords
+- [ ] **VCOACH-04**: Évaluation LLM des réponses agent : critères pédagogiques (ton, structure, méthode appliquée) avec feedback constructif en français
+- [ ] **VCOACH-05**: Routes mises à jour : `/conseiller/training/[scenario]` charge VocalCoachScreen au lieu de ScenarioRunner
+- [ ] **VCOACH-06**: Sidebar nav et deep-links dashboard mis à jour pour pointer vers les nouveaux scenarios
+- [ ] **VCOACH-07**: L'ancien `ScenarioRunner` + `use-scenario-session` + `scenario-engine` deviennent **deprecated** (gardés en code pour fallback non-Live mais non utilisés par défaut)
+
+### Cleanup & Migration (M2-CLEAN)
+
+- [ ] **M2-CLEAN-01**: Sidebar conseiller pointe sur le scénario principal de Train-my-agent (probablement `decouverte_vendeur` ou `pige_telephonique`) plutôt que `mandats`
+- [ ] **M2-CLEAN-02**: Dashboard Top 3 cards deep-link vers les nouveaux scenarios (RATIO_SITUATION_MAP mis à jour)
+- [ ] **M2-CLEAN-03**: Le mode démo continue de fonctionner avec Gemini Live (X-Demo-Mode header sur les sockets/endpoints) — OU une UX claire "mode demo : Gemini Live indisponible" si pas faisable
+- [ ] **M2-CLEAN-04**: Documentation de l'architecture finale du copilote (cerveau coaching + vocal training) dans `docs/architecture-coach.md`
+
+---
+
 ## v2 Requirements (deferred to next milestone)
 
 - Cross-session copilot memory (summary of previous session)
