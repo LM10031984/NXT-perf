@@ -19,6 +19,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Dashboard "Clin d'oeil"** - Top 3 priorités hiérarchisées + actions + bouton tour, deep-links vers tous les outils (completed 2026-05-25, verified 6/6 SCs)
 - [x] **Phase 6: Training Vocal Module** - Route training/[situation] opérationnelle, au moins 1 scénario mandats shipé (completed 2026-05-25, verified 6/6 SCs)
 - [x] **Phase 7: Onboarding Wizard** - ConseillerRegistrationWizard 3-4 étapes, autres rôles inchangés, E2E safenet (completed 2026-05-22, verified 4/4 SCs)
+- [ ] **Phase 8: Coach Brain — Méthode + System Prompt** - Méthode coaching injectée dans le system prompt, modèle LLM optimisé par benchmark
+- [ ] **Phase 9: Coach Brain — Ingest Pipeline** - Pipeline d'ingestion PDF/DOCX/audio/vidéo/YouTube vers Supabase pgvector, anonymisé et idempotent
+- [ ] **Phase 10: Coach Brain — RAG Amélioré** - RAG porté depuis nxt-coach (lib/rag.ts), retrieval plus sophistiqué en production
+- [ ] **Phase 11: Vocal Coach — Gemini Live Foundation** - Hook useGeminiLive + AudioWorklet + MicTestScreen portés, connexion WebSocket full-duplex validée
+- [ ] **Phase 12: Vocal Coach — Scenarios & UI** - 20+ scénarios portés, VocalCoachScreen + VocalCoachDebriefScreen opérationnels, évaluation LLM
+- [ ] **Phase 13: Cleanup & Migration** - Sidebar, deep-links et mode démo cohérents avec Gemini Live ; documentation architecture finale
 
 ## Phase Details
 
@@ -134,17 +140,106 @@ Decimal phases appear between their surrounding integers in numeric order.
   - [ ] 07-02-PLAN.md — Wizard 4 étapes complet + montage conditionnel register/page.tsx + E2E wizard (ONBO-01, ONBO-02, ONBO-04)
 **UI hint**: yes
 
+---
+
+## Milestone 2: Coach Brain + Vocal Coach Refonte
+
+### Overview M2
+
+Deux thrusts en parallèle : (1) intégration du cerveau coaching depuis `nxt-coach` (méthode, ingest pipeline, RAG amélioré, benchmark LLM) ; (2) refonte du Vocal Coach en Gemini Live full-duplex depuis `Train-my-agent` (remplacement du ScenarioRunner turn-based de la Phase 6 M1). Les phases 8-10 couvrent le thrust Coach Brain, les phases 11-12 couvrent le thrust Vocal Coach, et la phase 13 ferme les deux avec cleanup et documentation.
+
+### Phase 8: Coach Brain — Méthode + System Prompt
+**Goal**: Le copilote chat répond en cohérence avec la méthode de coaching NXT injectée dans le system prompt, et utilise le modèle LLM le plus performant identifié par benchmark
+**Depends on**: Phase 2 (Streaming API + system prompt existant)
+**Requirements**: METHOD-01, METHOD-02, METHOD-03, METHOD-04, RAG2-02, RAG2-03, RAG2-04
+**Success Criteria** (what must be TRUE):
+  1. `src/data/coaching-method/coaching-method.md` existe dans le repo, versionné avec date et numéro de version en en-tête
+  2. `buildSystemPrompt()` injecte la méthode dans un bloc `<coaching-method>...</coaching-method>` — vérifiable en lisant le prompt généré
+  3. Sur 3 prompts de test standard, la réponse avec méthode injectée est qualitativement différente (plus structurée, vocabulaire méthode) de la réponse sans — résultat consigné dans `docs/llm-benchmark.md`
+  4. `docs/llm-benchmark.md` documente le benchmark Claude Haiku 3.5 / GPT-4o-mini / Gemini 1.5 Flash / Mistral avec scores qualité, coût/token et latence first-token
+  5. La variable d'environnement `COACH_RAG_DEFAULT_MODEL` est documentée dans `.env.local.example` et le copilote l'utilise à la place du modèle hardcodé
+**Plans**: TBD
+
+### Phase 9: Coach Brain — Ingest Pipeline
+**Goal**: Un développeur (Laurent) peut injecter n'importe quel document coaching (PDF, DOCX, audio, vidéo, YouTube) dans Supabase pgvector via un script CLI — de façon anonymisée, idempotente et documentée
+**Depends on**: Phase 1 (pgvector tables + embeddings déjà opérationnels)
+**Requirements**: INGEST-01, INGEST-02, INGEST-03, INGEST-04, INGEST-05, INGEST-06, INGEST-07, INGEST-08
+**Success Criteria** (what must be TRUE):
+  1. `npx tsx scripts/ingest-coach-corpus.ts --source sources/` s'exécute sans erreur sur un dossier contenant au moins un PDF, un DOCX et un fichier TXT
+  2. Les chunks indexés dans pgvector contiennent des métadonnées de source (nom de fichier, type, date d'ingestion) récupérables via `SELECT`
+  3. Ré-exécuter le script sur les mêmes fichiers ne crée pas de doublons (hash de contenu détecté, log "already indexed" visible)
+  4. Les noms propres, adresses et numéros de téléphone présents dans un transcript test sont absents des chunks indexés (vérification spot-check manuelle)
+  5. Un transcript coaching de 60+ minutes produit un résumé indexé séparément avec un lien vers les chunks détaillés
+  6. `scripts/README-ingest.md` décrit le flow complet en moins de 30 lignes, reproductible depuis zéro
+**Plans**: TBD
+
+### Phase 10: Coach Brain — RAG Amélioré
+**Goal**: Le retrieval du copilote utilise le RAG le plus sophistiqué disponible (porté depuis nxt-coach `lib/rag.ts` si supérieur à l'actuel `retrieveHybrid()`) — en production, en remplacement transparent
+**Depends on**: Phase 9 (corpus indexé avec le nouveau pipeline), Phase 2 (endpoint stream existant)
+**Requirements**: RAG2-01
+**Success Criteria** (what must be TRUE):
+  1. Une comparaison documentée entre `retrieveHybrid()` (M1) et `lib/rag.ts` (nxt-coach) est produite — si nxt-coach est plus sophistiqué, il est porté dans `src/lib/server/coach-rag/retrieve.ts` ; sinon le fichier existant est conservé avec un commentaire "audité M2"
+  2. Le copilote retourne des chunks pertinents sur au moins 3 questions de coaching réelles testées manuellement contre le corpus ingéré en Phase 9
+**Plans**: TBD
+
+### Phase 11: Vocal Coach — Gemini Live Foundation
+**Goal**: La connexion WebSocket full-duplex avec Gemini Live API est opérationnelle dans NXT-perf — audio entrant et sortant fonctionnels, micro testé avant tout scenario
+**Depends on**: Phase 6 (route training existante), Phase 1 (GEMINI_API_KEY déjà en env)
+**Requirements**: VLIVE-01, VLIVE-02, VLIVE-03, VLIVE-04, VLIVE-05
+**Success Criteria** (what must be TRUE):
+  1. `src/hooks/use-gemini-live.ts` existe et établit une connexion WebSocket à `wss://generativelanguage.googleapis.com` — la connexion s'ouvre sans erreur en local avec `GEMINI_API_KEY` valide
+  2. `MicTestScreen` s'affiche avant tout scenario : l'utilisateur parle, voit un indicateur de niveau audio, et peut valider avant de continuer
+  3. Si la permission micro est refusée, un écran de fallback explicite s'affiche (pas de crash silencieux)
+  4. La configuration `GEMINI_LIVE_MODEL` est documentée dans `.env.local.example` avec la valeur par défaut recommandée
+  5. L'AudioWorklet traite l'audio sans latence audible (pas de buffering > 200ms perceptible à l'oreille)
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 12: Vocal Coach — Scenarios & UI
+**Goal**: L'utilisateur peut choisir un scenario parmi 20+, s'entraîner en full-duplex avec Gemini Live, et recevoir un debrief évalué par LLM avec feedback constructif en français
+**Depends on**: Phase 11 (Gemini Live foundation opérationnelle)
+**Requirements**: VCOACH-01, VCOACH-02, VCOACH-03, VCOACH-04, VCOACH-05, VCOACH-06, VCOACH-07
+**Success Criteria** (what must be TRUE):
+  1. `src/data/training-scenarios/v2/` contient les 20+ fichiers JSON de scenarios portés depuis `Train-my-agent/scenarios/` avec le schéma NXT-perf documenté
+  2. La route `/conseiller/training/[scenario]` charge `VocalCoachScreen` (Gemini Live) au lieu de `ScenarioRunner` (turn-based M1)
+  3. Un scenario complet de bout en bout s'exécute : intro → échange vocal full-duplex → fin → debrief LLM affiché avec au moins 3 critères pédagogiques notés
+  4. Le debrief évalue la qualité par critères pédagogiques (ton, structure, méthode appliquée) — pas par matching de mots-clés — vérifiable en regardant le prompt envoyé au LLM d'évaluation
+  5. La sidebar conseiller et les deep-links dashboard pointent vers les nouveaux scenarios v2
+  6. `ScenarioRunner`, `use-scenario-session` et `scenario-engine` sont marqués `@deprecated` dans leurs headers de fichiers — ils restent compilables mais ne sont plus utilisés par défaut
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 13: Cleanup & Migration
+**Goal**: L'expérience utilisateur est cohérente de bout en bout — sidebar, deep-links, mode démo et documentation reflètent l'architecture finale M2 (Coach Brain + Gemini Live)
+**Depends on**: Phase 8, Phase 12 (les deux thrusts M2 complets)
+**Requirements**: M2-CLEAN-01, M2-CLEAN-02, M2-CLEAN-03, M2-CLEAN-04
+**Success Criteria** (what must be TRUE):
+  1. La sidebar conseiller pointe sur le scenario principal issu de `Train-my-agent` (`decouverte_vendeur` ou `pige_telephonique`) — pas sur `mandats` (scenario M1)
+  2. Les 3 cartes Top Priorités du dashboard deep-link vers les scenarios v2 corrects via `RATIO_SITUATION_MAP` mis à jour
+  3. En mode démo (`X-Demo-Mode: true`), soit Gemini Live fonctionne normalement, soit un message clair "Training vocal Live indisponible en mode démo" s'affiche — aucun crash silencieux
+  4. `docs/architecture-coach.md` décrit en moins de 2 pages l'architecture finale : flux Coach Brain (méthode → system prompt → RAG → modèle), flux Vocal Coach (useGeminiLive → VocalCoachScreen → debrief), et points d'extension futurs
+**Plans**: TBD
+**UI hint**: yes
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12 → 13
+
+Parallelization possible: Phase 8+9 can run in parallel; Phase 11+12 is sequential (11 before 12); Phases 8-10 and 11-12 are independent thrusts that can overlap.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Context Layer + Data Hygiene | 6/6 | Complete   | 2026-05-21 |
+| 1. Context Layer + Data Hygiene | 6/6 | Complete | 2026-05-21 |
 | 2. Streaming API + RAG Grounding | 0/4 | Planned | - |
 | 3. VocalFlow Stabilization | 1/3 | In Progress | - |
 | 4. Copilot UI | 0/3 | Planned | - |
 | 5. Dashboard "Clin d'oeil" | 0/3 | Planned | - |
 | 6. Training Vocal Module | 0/TBD | Not started | - |
 | 7. Onboarding Wizard | 0/3 | Planned | - |
+| 8. Coach Brain — Méthode + System Prompt | 0/TBD | Not started | - |
+| 9. Coach Brain — Ingest Pipeline | 0/TBD | Not started | - |
+| 10. Coach Brain — RAG Amélioré | 0/TBD | Not started | - |
+| 11. Vocal Coach — Gemini Live Foundation | 0/TBD | Not started | - |
+| 12. Vocal Coach — Scenarios & UI | 0/TBD | Not started | - |
+| 13. Cleanup & Migration | 0/TBD | Not started | - |

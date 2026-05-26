@@ -195,6 +195,38 @@
 | ONBO-02 | Phase 7 | Pending |
 | ONBO-03 | Phase 7 | Pending |
 | ONBO-04 | Phase 7 | Pending |
+| METHOD-01 | Phase 8 | Pending |
+| METHOD-02 | Phase 8 | Pending |
+| METHOD-03 | Phase 8 | Pending |
+| METHOD-04 | Phase 8 | Pending |
+| RAG2-02 | Phase 8 | Pending |
+| RAG2-03 | Phase 8 | Pending |
+| RAG2-04 | Phase 8 | Pending |
+| INGEST-01 | Phase 9 | Pending |
+| INGEST-02 | Phase 9 | Pending |
+| INGEST-03 | Phase 9 | Pending |
+| INGEST-04 | Phase 9 | Pending |
+| INGEST-05 | Phase 9 | Pending |
+| INGEST-06 | Phase 9 | Pending |
+| INGEST-07 | Phase 9 | Pending |
+| INGEST-08 | Phase 9 | Pending |
+| RAG2-01 | Phase 10 | Pending |
+| VLIVE-01 | Phase 11 | Pending |
+| VLIVE-02 | Phase 11 | Pending |
+| VLIVE-03 | Phase 11 | Pending |
+| VLIVE-04 | Phase 11 | Pending |
+| VLIVE-05 | Phase 11 | Pending |
+| VCOACH-01 | Phase 12 | Pending |
+| VCOACH-02 | Phase 12 | Pending |
+| VCOACH-03 | Phase 12 | Pending |
+| VCOACH-04 | Phase 12 | Pending |
+| VCOACH-05 | Phase 12 | Pending |
+| VCOACH-06 | Phase 12 | Pending |
+| VCOACH-07 | Phase 12 | Pending |
+| M2-CLEAN-01 | Phase 13 | Pending |
+| M2-CLEAN-02 | Phase 13 | Pending |
+| M2-CLEAN-03 | Phase 13 | Pending |
+| M2-CLEAN-04 | Phase 13 | Pending |
 
 ---
 
