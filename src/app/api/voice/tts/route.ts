@@ -27,9 +27,19 @@ function getVoiceId(persona?: string): { voiceId: string; fallback: boolean } {
 }
 
 export async function POST(request: NextRequest) {
-  const auth = await requireAuth();
-  if (auth.error) return auth.error;
-  const { allowed } = checkRateLimit(`voice-tts:${auth.user.id}`, 30, 60_000);
+  // Demo mode: bypass Supabase auth but still rate-limit per-IP to prevent abuse
+  const isDemoMode = request.headers.get("X-Demo-Mode") === "true";
+
+  let rateLimitKey: string;
+  if (isDemoMode) {
+    const fwd = request.headers.get("x-forwarded-for") ?? "unknown";
+    rateLimitKey = `voice-tts-demo:${fwd}`;
+  } else {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+    rateLimitKey = `voice-tts:${auth.user.id}`;
+  }
+  const { allowed } = checkRateLimit(rateLimitKey, 30, 60_000);
   if (!allowed) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
   if (!ELEVENLABS_API_KEY) {

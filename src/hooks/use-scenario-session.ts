@@ -117,7 +117,10 @@ export function useScenarioSession(scenario: TrainingScenario) {
     try {
       const response = await fetch("/api/voice/tts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Demo-Mode": "true",
+        },
         body: JSON.stringify({
           text,
           persona: state.scenario.personaId,

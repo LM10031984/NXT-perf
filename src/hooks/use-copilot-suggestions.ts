@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import { useCopilotStore } from "@/stores/copilot-store";
+import { useMemo } from "react";
 import type { SuggestionCard } from "@/types/copilot";
 import type { ComputedRatio } from "@/types/ratios";
-
-const SUGGESTION_TTL_MS = 10 * 60 * 1000; // 10 min (D1)
 
 /**
  * Compute a stable string signature from ratio statuses.
@@ -29,24 +26,19 @@ interface UseCopilotSuggestionsResult {
 export function useCopilotSuggestions(
   ratios: ComputedRatio[]
 ): UseCopilotSuggestionsResult {
-  const { suggestions, suggestionsLastFetchedAt, suggestionsForRatioSignature, setSuggestions } =
-    useCopilotStore();
-  const signature = useMemo(() => computeRatioSignature(ratios), [ratios]);
-
-  // Derive suggestions synchronously
+  // Pure derivation — no store side-effect to avoid render loops.
+  // Memoized on ratios array identity; downstream `derived` reference is stable
+  // when ratio data is stable.
   const derived = useMemo(() => {
-    // Sort ratios by severity: danger first, then warning, skip ok
     const sorted = [...ratios].sort((a, b) => {
       const severityOrder = { danger: 0, warning: 1, ok: 2 };
       return severityOrder[a.status] - severityOrder[b.status];
     });
 
-    // Take top 3 under-performing ratios
     const underperforming = sorted.filter((r) => r.status !== "ok");
     const top3 = underperforming.slice(0, 3);
 
     if (top3.length === 0) {
-      // Fallback: 1 generic card for general analysis
       return [
         {
           id: "suggestion-general",
@@ -58,21 +50,8 @@ export function useCopilotSuggestions(
       ];
     }
 
-    // Map each ratio to a SuggestionCard with verdicts and prompts
     return top3.map((ratio) => deriveSuggestionCard(ratio));
   }, [ratios]);
-
-  // Check cache validity and dispatch update to store
-  useEffect(() => {
-    const isCacheValid =
-      suggestionsForRatioSignature === signature &&
-      suggestionsLastFetchedAt !== null &&
-      Date.now() - suggestionsLastFetchedAt < SUGGESTION_TTL_MS;
-
-    if (!isCacheValid) {
-      setSuggestions(derived, signature);
-    }
-  }, [signature, suggestionsLastFetchedAt, suggestionsForRatioSignature, derived, setSuggestions]);
 
   return { suggestions: derived, isLoading: false };
 }
