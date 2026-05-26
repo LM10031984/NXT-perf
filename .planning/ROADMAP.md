@@ -192,7 +192,11 @@ Deux thrusts en parallèle : (1) intégration du cerveau coaching depuis `nxt-co
   3. Si la permission micro est refusée, un écran de fallback explicite s'affiche (pas de crash silencieux)
   4. La configuration `GEMINI_LIVE_MODEL` est documentée dans `.env.local.example` avec la valeur par défaut recommandée
   5. L'AudioWorklet traite l'audio sans latence audible (pas de buffering > 200ms perceptible à l'oreille)
-**Plans**: TBD
+**Plans**: 4 plans
+  - [ ] 11-00-PLAN.md — Wave 0 stubs (hook squelette + composant + route 501 + worklet + page test) (VLIVE-01, VLIVE-02, VLIVE-03, VLIVE-04, VLIVE-05)
+  - [ ] 11-01-PLAN.md — Route POST /api/gemini/live-token : auth + rate-limit + demo mode + ephemeral token (VLIVE-04)
+  - [ ] 11-02-PLAN.md — use-gemini-live hook complet WebSocket + AudioWorklet pcm-processor.js resampling 16 kHz (VLIVE-01, VLIVE-02)
+  - [ ] 11-03-PLAN.md — MicTestScreen complet : permission + visualizer AnalyserNode + fallback FR + checkpoint human-verify (VLIVE-03, VLIVE-05)
 **UI hint**: yes
 
 ### Phase 12: Vocal Coach — Scenarios & UI
@@ -240,6 +244,6 @@ Parallelization possible: Phase 8+9 can run in parallel; Phase 11+12 is sequenti
 | 8. Coach Brain — Méthode + System Prompt | 0/TBD | Not started | - |
 | 9. Coach Brain — Ingest Pipeline | 0/TBD | Not started | - |
 | 10. Coach Brain — RAG Amélioré | 0/TBD | Not started | - |
-| 11. Vocal Coach — Gemini Live Foundation | 0/TBD | Not started | - |
+| 11. Vocal Coach — Gemini Live Foundation | 0/4 | Planned | - |
 | 12. Vocal Coach — Scenarios & UI | 0/TBD | Not started | - |
 | 13. Cleanup & Migration | 0/TBD | Not started | - |
