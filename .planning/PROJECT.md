@@ -8,19 +8,41 @@ NXT Performance est un cockpit web de performance commerciale pour l'immobilier 
 
 **En 5 secondes**, l'utilisateur doit comprendre où il en est ET savoir quoi faire ensuite. Le dashboard n'est plus un mur de chiffres ; c'est un copilote qui diagnostique la douleur et propose l'action.
 
-## Current Milestone: v1.1 Coach Brain Integration
+## Current Milestone: v1.1 Coach Brain + Vocal Coach Refonte
 
-**Goal :** Porter le cerveau coaching de `nxt-coach` (LM10031984/COACHNXT) dans NXT-perf en gardant le stack cloud (OpenRouter + Supabase pgvector + Groq Whisper), pour que le copilote retourne du vrai contenu coaching plutôt que des réponses LLM génériques.
+**Goal :** Atteindre la PARITÉ FONCTIONNELLE avec les apps de référence (`nxt-coach` pour le cerveau coaching, `Train-my-agent` pour le training vocal). La Phase 6 du milestone 1 a livré une version turn-based qui ne tient pas la promesse de fluidité — M2 la remplace par une vraie expérience Gemini Live full-duplex, plus l'intégration du cerveau coaching dans le copilote chat.
 
-**Target features :**
+**Deux thrusts en parallèle** :
+
+### Thrust 1 — Coach Brain Integration (depuis `nxt-coach` / LM10031984/COACHNXT)
 - Ingest pipeline (PDF/DOCX/TXT/audio/vidéo/YouTube) → chunks → Supabase pgvector
 - Méthode coaching extraite (`data/coaching-method.md`) injectée dans le system prompt
 - Anonymisation des transcripts coaching (noms, adresses, données sensibles)
 - Synthèse longue pour sessions coaching 1h+
 - RAG amélioré porté depuis `lib/rag.ts` de nxt-coach
-- Choix d'un modèle OpenRouter économique avec qualité acceptable (benchmark Haiku / GPT-4o-mini / Gemini Flash)
+- Choix d'un modèle OpenRouter économique avec qualité acceptable (benchmark Haiku / GPT-4o-mini / Gemini Flash) — remplace Sonnet par défaut
 
-**Key context :** Ollama local exclu (cloud-first pour scaling multi-agents). SQLite local ne migre pas (Supabase pgvector existant). Le scenario "training mandats" et le mode démo continuent de fonctionner.
+### Thrust 2 — Vocal Coach Refonte (depuis `Train-my-agent` / LM10031984/Train-my-agent)
+- Port `hooks/useGeminiLive.ts` (WebSocket full-duplex avec Gemini Live API)
+- Port `components/VocalCoachScreen.tsx` adapté à Next.js App Router
+- Port `components/VocalCoachDebriefScreen.tsx` (debrief LLM-évalué)
+- Port `components/AudioWorkletTest.tsx` + `MicTestScreen.tsx` (gestion audio fine)
+- Port les 20+ scenarios JSON (`decouverte_vendeur`, `defense_exclusivite`, `pige_telephonique`, etc.)
+- **Remplace** le `ScenarioRunner` turn-based de M1 Phase 6 (qui devient deprecated)
+- Évaluation par LLM (pas matching keywords) avec critères pédagogiques
+
+**Key context :**
+- Ollama local exclu (cloud-first pour scaling multi-agents)
+- SQLite local ne migre pas (Supabase pgvector existant)
+- Gemini Live API utilise déjà `@google/genai` 1.48.0 déjà installé + `GEMINI_API_KEY` en env
+- M1 Phase 6 `ScenarioRunner` + `use-scenario-session` deviennent **deprecated** mais restent en code pour fallback non-Live
+- Le mode démo continue de fonctionner (bypass auth côté serveur, header X-Demo-Mode)
+
+**Hors scope (v1.2+) :**
+- Refonte UX manager/directeur/coach/réseau dashboards
+- Migration Supabase pour mock data métier (résultats, ratios, etc.)
+- Multi-tenant scenarios (chaque agence son corpus de scenarios)
+- Gamification (badges, niveaux) — existe dans Train-my-agent mais pas prioritaire
 
 ## Requirements
 
