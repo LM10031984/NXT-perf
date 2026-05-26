@@ -35,10 +35,8 @@ interface PriorityCardDisplayProps {
 }
 
 function PriorityCardDisplay({ card }: PriorityCardDisplayProps) {
-  const { setPrompt, openCopilot } = useCopilotStore((s) => ({
-    setPrompt: s.setPrompt,
-    openCopilot: s.openCopilot,
-  }));
+  const setPrompt = useCopilotStore((s) => s.setPrompt);
+  const openCopilot = useCopilotStore((s) => s.openCopilot);
 
   const styles = SEVERITY_STYLES[card.severity];
   const badgeLabel = SEVERITY_LABELS[card.severity];

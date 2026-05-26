@@ -6,12 +6,10 @@ import { CopilotChatDrawer } from "@/components/conseiller/copilot/CopilotChatDr
 import { useCopilotStore } from "@/stores/copilot-store";
 
 export function FloatingCopilote() {
-  const { isOpen, pendingPrompt, openCopilot, closeCopilot } = useCopilotStore((s) => ({
-    isOpen: s.isOpen,
-    pendingPrompt: s.pendingPrompt,
-    openCopilot: s.openCopilot,
-    closeCopilot: s.closeCopilot,
-  }));
+  const isOpen = useCopilotStore((s) => s.isOpen);
+  const pendingPrompt = useCopilotStore((s) => s.pendingPrompt);
+  const openCopilot = useCopilotStore((s) => s.openCopilot);
+  const closeCopilot = useCopilotStore((s) => s.closeCopilot);
 
   // Lock body scroll while drawer open
   useEffect(() => {

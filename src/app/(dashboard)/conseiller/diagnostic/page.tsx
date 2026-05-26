@@ -40,10 +40,8 @@ function DiagnosticRouter() {
 
   const { computedRatios } = useRatios();
   const { suggestions } = useCopilotSuggestions(computedRatios);
-  const { openCopilot, setPrompt } = useCopilotStore((s) => ({
-    openCopilot: s.openCopilot,
-    setPrompt: s.setPrompt,
-  }));
+  const openCopilot = useCopilotStore((s) => s.openCopilot);
+  const setPrompt = useCopilotStore((s) => s.setPrompt);
 
   const handleSuggestionSelect = (card: SuggestionCard) => {
     setPrompt(card.prompt);
