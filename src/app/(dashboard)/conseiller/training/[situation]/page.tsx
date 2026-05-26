@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import { type SituationType } from "@/lib/constants";
 import { mandatsScenario } from "@/data/training-scenarios/mandats";
@@ -21,11 +22,12 @@ const STUB_SITUATIONS: SituationType[] = [
 ];
 
 interface TrainingPageProps {
-  params: { situation: string };
+  params: Promise<{ situation: string }>;
 }
 
 export default function TrainingPage({ params }: TrainingPageProps) {
-  const situation = params.situation as SituationType;
+  const { situation: rawSituation } = use(params);
+  const situation = rawSituation as SituationType;
 
   if (!VALID_SITUATIONS.includes(situation)) {
     return (

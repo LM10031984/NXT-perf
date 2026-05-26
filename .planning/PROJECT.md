@@ -8,9 +8,71 @@ NXT Performance est un cockpit web de performance commerciale pour l'immobilier 
 
 **En 5 secondes**, l'utilisateur doit comprendre où il en est ET savoir quoi faire ensuite. Le dashboard n'est plus un mur de chiffres ; c'est un copilote qui diagnostique la douleur et propose l'action.
 
+## Current Milestone: v1.1 Coach Brain Integration
+
+**Goal :** Porter le cerveau coaching de `nxt-coach` (LM10031984/COACHNXT) dans NXT-perf en gardant le stack cloud (OpenRouter + Supabase pgvector + Groq Whisper), pour que le copilote retourne du vrai contenu coaching plutôt que des réponses LLM génériques.
+
+**Target features :**
+- Ingest pipeline (PDF/DOCX/TXT/audio/vidéo/YouTube) → chunks → Supabase pgvector
+- Méthode coaching extraite (`data/coaching-method.md`) injectée dans le system prompt
+- Anonymisation des transcripts coaching (noms, adresses, données sensibles)
+- Synthèse longue pour sessions coaching 1h+
+- RAG amélioré porté depuis `lib/rag.ts` de nxt-coach
+- Choix d'un modèle OpenRouter économique avec qualité acceptable (benchmark Haiku / GPT-4o-mini / Gemini Flash)
+
+**Key context :** Ollama local exclu (cloud-first pour scaling multi-agents). SQLite local ne migre pas (Supabase pgvector existant). Le scenario "training mandats" et le mode démo continuent de fonctionner.
+
 ## Requirements
 
 ### Validated
+
+<!-- Phase 1 (Context Layer) — 5/5 SCs PASSED. -->
+
+- ✓ Types copilote (`src/types/copilot.ts`), `buildCopilotContext()` capé 3000 tokens — Phase 1
+- ✓ `src/lib/data-access.ts` thin wrapper (4 composants migrés depuis mock-results) — Phase 1
+- ✓ `src/stores/copilot-store.ts` séparé (jamais importé dans app-store) — Phase 1
+- ✓ `SITUATION_PERSONA_MAP` 5 keys (Kind/Sport/Warrior) dans constants.ts — Phase 1
+- ✓ `GET /api/copilot/rag-health` endpoint santé live — Phase 1
+
+<!-- Phase 2 (Streaming API) — 6/6 SCs PASSED (UAT live pending real Supabase session). -->
+
+- ✓ `POST /api/copilot/stream` SSE avec auth + rate-limit + abort 30s — Phase 2
+- ✓ Mode démo (X-Demo-Mode header) court-circuite OpenRouter — Phase 2
+- ✓ RAG threshold 0.75, wrapped `<rag-source>`, Hoguet guardrail, zero-grounding refusal — Phase 2
+
+<!-- Phase 3 (VocalFlow) — 4/4 SCs PASSED. -->
+
+- ✓ `src/lib/transcription.ts` wrapper Groq (3 retries 429, timeout 10s, typed Result) — Phase 3
+- ✓ 6 bugs VocalFlow corrigés (BUGS.md inventaire) — Phase 3
+- ✓ VocalDrawer CTA "Saisir mes chiffres à la voix" sur dashboard conseiller — Phase 3
+- ✓ E2E test saisie vocale — Phase 3
+
+<!-- Phase 4 (Copilot UI) — 4/4 SCs PASSED. -->
+
+- ✓ FloatingCopilote remplace le stub, chat drawer streaming SSE — Phase 4
+- ✓ 3 suggestion cards déterministes (16 mappings ratio × sévérité) — Phase 4
+- ✓ Streaming visible token-par-token, abort propagé — Phase 4
+
+<!-- Phase 5 (Dashboard Clin d'œil) — 6/6 SCs PASSED. -->
+
+- ✓ Top3PrioritesSection (rouge/orange/vert) déterministe au top du dashboard — Phase 5
+- ✓ Deep-links cartes → training routes / copilote / saisie — Phase 5
+- ✓ Header "?" tour CTA (déjà existant, vérifié) — Phase 5
+- ✓ Pages existantes conseiller inchangées — Phase 5
+
+<!-- Phase 6 (Training Vocal) — 6/6 SCs PASSED. -->
+
+- ✓ Route `/conseiller/training/[situation]` opérationnelle — Phase 6
+- ✓ Scenario mandats 6 étapes (TTS → user turn → transcription → eval → next) — Phase 6
+- ✓ `scenario-engine.ts` + `use-scenario-session.ts` FSM complète — Phase 6
+- ✓ Sidebar nav "Training vocal" + deep-links dashboard fonctionnels — Phase 6
+- ✓ 4 scenarios stub (estimation, objections-acheteur, négo-honoraires, follow-up) — Phase 6
+
+<!-- Phase 7 (Onboarding Wizard) — 4/4 SCs PASSED. -->
+
+- ✓ ConseillerRegistrationWizard 4 étapes, store isolé — Phase 7
+- ✓ register/page.tsx +7 lignes seulement (manager/directeur/coach/reseau byte-identique) — Phase 7
+- ✓ E2E safety net non-conseiller (7 tests actifs) — Phase 7
 
 <!-- Inférés depuis la codebase existante (.planning/codebase/ARCHITECTURE.md, STRUCTURE.md). -->
 
